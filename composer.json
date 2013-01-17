@@ -1,0 +1,24 @@
+{
+    "name": "eden-php/core",
+    "type": "library",
+    "description": "Designed for rapid prototyping, with less code.",
+    "keywords": ["eden", "library"],
+    "homepage": "http://eden-php.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christian Blanquera",
+            "email": "cblanquera@openovate.com"
+        },
+        {
+            "name": "Symon Buenavista",
+            "email": "sbuenavista@openovate.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.1"
+    },
+    "autoload": {
+         "psr-0": { "Eden\\": "library/" }
+    }
+}
