@@ -1,6 +1,6 @@
 <?php //-->
 /*
- * This file is part of the Eden package.
+ * This file is part of the Core package of the Eden PHP Library.
  * (c) 2013-2014 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE
@@ -181,7 +181,7 @@ class Base
      * Loops through returned result sets
      *
      * @param *callable
-     * @return this
+     * @return Eden\Core\Base
      */
     public function each($callback)
     {
@@ -195,7 +195,7 @@ class Base
      *
      * @param mixed
      * @param string|null
-     * @return this
+     * @return Eden\Core\Base
      */
     public function inspect($variable = null, $next = null)
     {
@@ -269,7 +269,7 @@ class Base
      * @param *string
      * @param *callable
      * @param bool
-     * @return this
+     * @return Eden\Core\Base
      */
     public function listen($event, $callable, $important = false)
     {
@@ -287,7 +287,7 @@ class Base
      * Creates a class route for this class.
      *
      * @param *string the class route name
-     * @return Eden_Class
+     * @return Eden\Core\Base
      */
     public function route($route)
     {
@@ -324,7 +324,7 @@ class Base
      * event has happened
      *
      * @param [string|null[,mixed..]]
-     * @return this
+     * @return Eden\Core\Base
      */
     public function trigger($event = null)
     {
@@ -342,7 +342,7 @@ class Base
      *
      * @param string|null
      * @param callable|null
-     * @return this
+     * @return Eden\Core\Base
      */
     public function unlisten($event = null, $callable = null)
     {
@@ -359,7 +359,7 @@ class Base
      * Invokes When if conditional is false
      *
      * @param bool
-     * @return this|Eden_Noop
+     * @return Eden\Core\Base|Eden\Core\When
      */
     public function when($isTrue, $lines = 0)
     {

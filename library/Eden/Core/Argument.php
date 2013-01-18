@@ -52,7 +52,7 @@ class Argument
      * @param *int
      * @param *mixed
      * @param *string[,string..]
-     * @return this
+     * @return Eden\Core\Argument
      */
     public function test($index, $types)
     {
@@ -81,7 +81,7 @@ class Argument
      * all methods are valid. To increase
      * performance call this method.
      *
-     * @return this
+     * @return Eden\Core\Argument
      */
     public function stop()
     {
@@ -96,7 +96,7 @@ class Argument
 	 * @param array arguments
      * @param *int
      * @param *string[,string..]
-     * @return this
+     * @return Eden\Core\Argument
      */
     public function virtual($method, array $args, $index, $types)
     {
@@ -361,7 +361,7 @@ class Argument
 	 * Returns the type name of the argument
 	 *
 	 * @param mixed
-	 * @return string
+	 * @return string|void
 	 */
     private function getTypeName($data)
     {

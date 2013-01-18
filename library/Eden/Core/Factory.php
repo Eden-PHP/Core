@@ -53,7 +53,7 @@ class Factory
     /**
      * Returns the class router class
      *
-     * @return Eden\Core\Event
+     * @return Eden\Core\Route
      */
     public function route()
     {

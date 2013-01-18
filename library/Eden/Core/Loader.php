@@ -57,7 +57,7 @@ class Loader
      *
      * @param string|null
      * @param string|null
-     * @return this
+     * @return Eden\Core\Loader
      */
     public function addRoot($root = null, $namespace = null)
     {
@@ -139,7 +139,7 @@ class Loader
      * Logically includes a class if not included already.
      *
      * @param *string the class name
-     * @return this
+     * @return Eden\Core\Loader
      */
     public function load($class)
     {
@@ -153,7 +153,7 @@ class Loader
     /**
      * Auto registers the auto loader to PHP
      *
-     * @return this
+     * @return Eden\Core\Loader
      */
     public function register()
     {

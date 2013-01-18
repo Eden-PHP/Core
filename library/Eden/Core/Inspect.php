@@ -78,7 +78,7 @@ class Inspect extends Base
      *
      * @param object
      * @param string
-     * @return this
+     * @return Eden\Core\Inspect
      */
     public function next($scope, $name = null)
     {
@@ -96,7 +96,7 @@ class Inspect extends Base
      * Outputs anything
      *
      * @param *variable any data
-     * @return Eden_Tool
+     * @return Eden\Core\Inspect
      */
     public function output($variable)
     {

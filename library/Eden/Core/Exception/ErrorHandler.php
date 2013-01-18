@@ -1,9 +1,9 @@
 <?php //-->
 /*
- * This file is part of the Eden package.
- * (c) 2010-2012 Christian Blanquera <cblanquera@gmail.com>
+ * This file is part of the Core package of the Eden PHP Library.
+ * (c) 2013-2014 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE.txt
+ * Copyright and license information can be found at LICENSE
  * distributed with this package.
  */
 
@@ -88,7 +88,7 @@ class ErrorHandler extends Event
    /**
      * Returns default handler back to PHP
      *
-     * @return this
+     * @return Eden\Core\Exception\ErrorHandler
      */
     public function release()
     {
@@ -99,7 +99,7 @@ class ErrorHandler extends Event
     /**
      * Registers this class' error handler to PHP
      *
-     * @return this
+     * @return Eden\Core\Exception\ErrorHandler
      */
     public function register()
     {
@@ -111,7 +111,7 @@ class ErrorHandler extends Event
      * Sets reporting
      *
      * @param int
-     * @return this
+     * @return Eden\Core\Exception\ErrorHandler
      */
     public function setReporting($type)
     {

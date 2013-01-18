@@ -65,7 +65,7 @@ class Loop extends Base
      *
      * @param object
      * @param callable
-     * @return this
+     * @return Eden\Core\Loop
      */
     public function iterate($scope, $callback)
     {

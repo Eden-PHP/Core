@@ -102,13 +102,13 @@ class When extends Base implements \ArrayAccess, \Iterator
     /**
      * isset using the ArrayAccess interface
      *
-     * @param number
+     * @param scalar|null|bool
      * @return bool
      */
     public function offsetExists($offset)
     {
-        //argument 1 must be a string or integer
-        Argument::i()->test(1, 'string', 'int');
+		//argument 1 must be scalar, null or bool
+        Argument::i()->test(1, 'scalar', 'null', 'bool');
 
         return $this->scope->offsetExists($offset);
     }
@@ -116,20 +116,21 @@ class When extends Base implements \ArrayAccess, \Iterator
     /**
      * returns data using the ArrayAccess interface
      *
-     * @param number
+     * @param scalar|null|bool
      * @return bool
      */
     public function offsetGet($offset)
     {
-        //argument 1 must be a string or integer
-        Argument::i()->test(1, 'string', 'int');
+		//argument 1 must be scalar, null or bool
+        Argument::i()->test(1, 'scalar', 'null', 'bool');
+		
         return $this->scope->offsetGet($offset);
     }
 
     /**
      * Sets data using the ArrayAccess interface
      *
-     * @param number
+     * @param scalar|null|bool
      * @param mixed
      * @return void
      */
@@ -140,7 +141,7 @@ class When extends Base implements \ArrayAccess, \Iterator
     /**
      * unsets using the ArrayAccess interface
      *
-     * @param number
+     * @param scalar|null|bool
      * @return bool
      */
     public function offsetUnset($offset)

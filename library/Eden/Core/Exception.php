@@ -64,7 +64,7 @@ class Exception extends \Exception
     /**
      * Adds parameters used in the message
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
     public function addVariable($variable)
     {
@@ -136,7 +136,7 @@ class Exception extends \Exception
      * Sets exception level
      *
      * @param string
-     * @return this
+     * @return Eden\Core\Exception
      */
     public function setLevel($level)
     {
@@ -147,7 +147,7 @@ class Exception extends \Exception
     /**
      * Sets exception level to DEBUG
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
     public function setLevelDebug()
     {
@@ -157,7 +157,7 @@ class Exception extends \Exception
     /**
      * Sets exception level to ERROR
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
     public function setLevelError()
     {
@@ -167,7 +167,7 @@ class Exception extends \Exception
     /**
      * Sets exception level to INFORMATION
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
     public function setLevelInformation()
     {
@@ -177,7 +177,7 @@ class Exception extends \Exception
     /**
      * Sets exception level to WARNING
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
     public function setLevelWarning()
     {
@@ -188,7 +188,7 @@ class Exception extends \Exception
      * Sets message
      *
      * @param string
-     * @return this
+     * @return Eden\Core\Exception
      */
     public function setMessage($message)
     {
@@ -199,7 +199,7 @@ class Exception extends \Exception
     /**
      * Sets what index the trace should start at
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
     public function setTraceOffset($offset)
     {
@@ -211,7 +211,7 @@ class Exception extends \Exception
      * Sets exception type
      *
      * @param string
-     * @return this
+     * @return Eden\Core\Exception
      */
     public function setType($type)
     {
@@ -232,7 +232,7 @@ class Exception extends \Exception
     /**
      * Sets exception type to CRITICAL
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
     public function setTypeCritical()
     {
@@ -242,7 +242,7 @@ class Exception extends \Exception
     /**
      * Sets exception type to GENERAL
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
     public function setTypeGeneral()
     {
@@ -252,7 +252,7 @@ class Exception extends \Exception
     /**
      * Sets exception type to LOGIC
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
     public function setTypeLogic()
     {

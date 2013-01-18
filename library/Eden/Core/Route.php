@@ -78,7 +78,7 @@ class Route extends Base
      *
      * @param string|null
      * @param array
-     * @return object
+     * @return mixed
      */
     public function getFunction($function = null, array $args = array())
     {
@@ -101,7 +101,7 @@ class Route extends Base
      * @param string|object|null
      * @param string|null
      * @param array
-     * @return object
+     * @return mixed
      */
     public function getMethod($class = null, $method = null, array $args = array())
     {

@@ -139,7 +139,7 @@ class ClassRoute
      * Unsets the route
      *
      * @param *string the class route name
-     * @return string|variable
+     * @return Eden\Core\Route\ClassRoute
      */
     public function release($route)
     {
@@ -158,7 +158,7 @@ class ClassRoute
      *
      * @param *string the class route name
      * @param *string the name of the class to route to
-     * @return Eden_Route
+     * @return Eden\Core\Route\ClassRoute
      */
     public function route($route, $class)
     {

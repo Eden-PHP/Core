@@ -213,7 +213,7 @@ class MethodRoute
      * Unsets the route
      *
      * @param *string the class route name
-     * @return string|variable
+     * @return Eden\Core\Route\MethodRoute
      */
     public function release($class, $method)
     {
@@ -235,7 +235,7 @@ class MethodRoute
      * @param *string the method route name
      * @param *string the name of the class to route to
      * @param *string the name of the method to route to
-     * @return Eden_Route
+     * @return Eden\Core\Route\MethodRoute
      */
     public function route($source, $alias, $class, $method = null)
     {

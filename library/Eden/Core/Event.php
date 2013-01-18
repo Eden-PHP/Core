@@ -32,7 +32,7 @@ class Event extends Base
      * @param *string
      * @param *callable
      * @param bool
-     * @return this
+     * @return Eden\Core\Event
      */
     public function listen($event, $callable, $important = false)
     {
@@ -63,7 +63,7 @@ class Event extends Base
      * event has happened
      *
      * @param [string|null[,mixed..]]
-     * @return this
+     * @return Eden\Core\Event
      */
     public function trigger($event = null)
     {
@@ -103,7 +103,7 @@ class Event extends Base
      *
      * @param string|null
      * @param callable|null
-     * @return this
+     * @return Eden\Core\Event
      */
     public function unlisten($event = null, $callable = null)
     {

@@ -1,9 +1,9 @@
 <?php //-->
 /*
- * This file is part of the Eden package.
- * (c) 2009-2011 Christian Blanquera <cblanquera@gmail.com>
+ * This file is part of the Core package of the Eden PHP Library.
+ * (c) 2013-2014 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE.txt
+ * Copyright and license information can be found at LICENSE
  * distributed with this package.
  */
 
@@ -67,7 +67,7 @@ namespace Eden\Core
         /**
          * Sets the PHP timezone
          *
-         * @return this
+         * @return Eden\Core\Controller
          */
         public function setTimezone($zone)
         {
