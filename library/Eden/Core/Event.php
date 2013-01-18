@@ -144,7 +144,7 @@ class Event extends Base
      * We need to try in order to properly unlisten
      * to a variable
      *
-     * @param callable
+     * @param *callable
      * @return string|false
      */
     protected function getId($callable)

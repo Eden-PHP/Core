@@ -34,10 +34,10 @@ class ErrorHandler extends Event
      * Called when a PHP error has occured. Must
      * use setErrorHandler() first.
      *
-     * @param number error number
-     * @param string message
-     * @param string file
-     * @param string line
+     * @param *number error number
+     * @param *string message
+     * @param *string file
+     * @param *string line
      * @return true
      */
     public function handler($errno, $errstr, $errfile, $errline)
@@ -110,7 +110,7 @@ class ErrorHandler extends Event
     /**
      * Sets reporting
      *
-     * @param int
+     * @param *int
      * @return Eden\Core\Exception\ErrorHandler
      */
     public function setReporting($type)

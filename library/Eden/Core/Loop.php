@@ -27,8 +27,8 @@ class Loop extends Base
      * Performs the scope's call and then iterates
      * through the results calling the callback.
      *
-     * @param string
-     * @param array
+     * @param *string
+     * @param *array
      * @return mixed
      */
     public function __call($name, $args)
@@ -63,8 +63,8 @@ class Loop extends Base
     /**
      * Hijacks the class and loop through the results
      *
-     * @param object
-     * @param callable
+     * @param *object
+     * @param *callable
      * @return Eden\Core\Loop
      */
     public function iterate($scope, $callback)
@@ -82,8 +82,8 @@ class Loop extends Base
     /**
      * Virtually calls the scope's method considering routes
      *
-     * @param string
-     * @param array
+     * @param *string
+     * @param *array
      * @return mixed
      */
     protected function getResults($name, $args)

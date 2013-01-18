@@ -28,8 +28,8 @@ class Inspect extends Base
     /**
      * Call a method of the scope and output it
      *
-     * @param string
-     * @param array
+     * @param *string
+     * @param *array
      * @return mixed
      */
     public function __call($name, $args)
@@ -76,7 +76,7 @@ class Inspect extends Base
      * Hijacks the class and reports the results of the next
      * method call
      *
-     * @param object
+     * @param *object
      * @param string
      * @return Eden\Core\Inspect
      */
@@ -95,7 +95,7 @@ class Inspect extends Base
     /**
      * Outputs anything
      *
-     * @param *variable any data
+     * @param *mixed any data
      * @return Eden\Core\Inspect
      */
     public function output($variable)
@@ -115,8 +115,8 @@ class Inspect extends Base
     /**
      * Virtually calls the scope's method considering routes
      *
-     * @param string
-     * @param array
+     * @param *string
+     * @param *array
      * @return mixed
      */
     protected function getResults($name, $args)

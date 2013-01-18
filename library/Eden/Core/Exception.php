@@ -64,6 +64,7 @@ class Exception extends \Exception
     /**
      * Adds parameters used in the message
      *
+	 * @param *scalar
      * @return Eden\Core\Exception
      */
     public function addVariable($variable)
@@ -135,7 +136,7 @@ class Exception extends \Exception
     /**
      * Sets exception level
      *
-     * @param string
+     * @param *string
      * @return Eden\Core\Exception
      */
     public function setLevel($level)
@@ -187,7 +188,7 @@ class Exception extends \Exception
     /**
      * Sets message
      *
-     * @param string
+     * @param *string
      * @return Eden\Core\Exception
      */
     public function setMessage($message)
@@ -210,7 +211,7 @@ class Exception extends \Exception
     /**
      * Sets exception type
      *
-     * @param string
+     * @param *string
      * @return Eden\Core\Exception
      */
     public function setType($type)
@@ -222,7 +223,7 @@ class Exception extends \Exception
     /**
      * Sets exception type to ARGUMENT
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
     public function setTypeArgument()
     {

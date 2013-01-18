@@ -27,7 +27,7 @@ class ExceptionHandler extends Event
      * Called when a PHP exception has occured. Must
      * use setExceptionHandler() first.
      *
-     * @param Exception
+     * @param *Exception
      * @return void
      */
     public function handler(Exception $e)

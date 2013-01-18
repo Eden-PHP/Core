@@ -92,8 +92,8 @@ class Argument
     /**
      * Tests virtual arguments for valid data types
      *
-	 * @param string method name
-	 * @param array arguments
+	 * @param *string method name
+	 * @param *array arguments
      * @param *int
      * @param *string[,string..]
      * @return Eden\Core\Argument
@@ -160,7 +160,7 @@ class Argument
 	/**
 	 * Validates a credit card argument.
 	 *
-	 * @param string
+	 * @param *string
 	 * @return bool
 	 */
     protected function isCreditCard($value)
@@ -173,7 +173,7 @@ class Argument
 	/**
 	 * Validates an email argument.
 	 *
-	 * @param string
+	 * @param *string
 	 * @return bool
 	 */
     protected function isEmail($value)
@@ -191,7 +191,7 @@ class Argument
 	/**
 	 * Validates a hex argument.
 	 *
-	 * @param string
+	 * @param *string
 	 * @return bool
 	 */
     protected function isHex($value)
@@ -202,7 +202,7 @@ class Argument
 	/**
 	 * Validates an HTML argument.
 	 *
-	 * @param string
+	 * @param *string
 	 * @return bool
 	 */
     protected function isHtml($value)
@@ -214,7 +214,7 @@ class Argument
 	/**
 	 * Validates a URL argument.
 	 *
-	 * @param string
+	 * @param *string
 	 * @return bool
 	 */
     protected function isUrl($value)
@@ -226,7 +226,7 @@ class Argument
 	/**
 	 * Validates an alpha numeric argument.
 	 *
-	 * @param string
+	 * @param *string
 	 * @return bool
 	 */
     protected function alphaNum($value)
@@ -237,7 +237,7 @@ class Argument
 	/**
 	 * Validates an alpha numeric underscore argument.
 	 *
-	 * @param string
+	 * @param *string
 	 * @return bool
 	 */
     protected function alphaNumScore($value) {
@@ -247,7 +247,7 @@ class Argument
 	/**
 	 * Validates an alpha numeric hyphen argument.
 	 *
-	 * @param string
+	 * @param *string
 	 * @return bool
 	 */
     protected function alphaNumHyphen($value)
@@ -258,7 +258,7 @@ class Argument
 	/**
 	 * Validates an alpha numeric hyphen underscore argument.
 	 *
-	 * @param string
+	 * @param *string
 	 * @return bool
 	 */
     protected function alphaNumLine($value)
@@ -269,8 +269,8 @@ class Argument
 	/**
 	 * Validates an argument given the type.
 	 *
-	 * @param string
-	 * @param mixed
+	 * @param *string
+	 * @param *mixed
 	 * @return bool
 	 */
     protected function isValid($type, $data)
@@ -324,7 +324,7 @@ class Argument
 	/**
 	 * Returns the data type of the argument
 	 *
-	 * @param mixed
+	 * @param *mixed
 	 * @return string
 	 */
     private function getDataType($data)
@@ -360,7 +360,7 @@ class Argument
 	/**
 	 * Returns the type name of the argument
 	 *
-	 * @param mixed
+	 * @param *mixed
 	 * @return string|void
 	 */
     private function getTypeName($data)

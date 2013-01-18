@@ -157,7 +157,6 @@ class MethodRoute
      *
      * @param *string the class route name
      * @param *string the class route method
-     * @param string|null returns this variable if no route is found
      * @return array|variable
      */
     public function getRoute($class, $method)
@@ -192,8 +191,8 @@ class MethodRoute
     /**
      * Checks to see if a name is a route
      *
-     * @param string|null
-     * @param string
+     * @param *string|null
+     * @param *string
      * @return bool
      */
     public function isRoute($class, $method)
@@ -213,6 +212,7 @@ class MethodRoute
      * Unsets the route
      *
      * @param *string the class route name
+     * @param *string the method route name
      * @return Eden\Core\Route\MethodRoute
      */
     public function release($class, $method)
@@ -234,7 +234,7 @@ class MethodRoute
      * @param *string the class route name
      * @param *string the method route name
      * @param *string the name of the class to route to
-     * @param *string the name of the method to route to
+     * @param string|null the name of the method to route to
      * @return Eden\Core\Route\MethodRoute
      */
     public function route($source, $alias, $class, $method = null)

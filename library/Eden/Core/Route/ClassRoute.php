@@ -96,7 +96,6 @@ class ClassRoute
      * Returns the class that will be routed to given the route.
      *
      * @param *string the class route name
-     * @param string|null returns this variable if no route is found
      * @return string|variable
      */
     public function getRoute($route)
@@ -124,7 +123,7 @@ class ClassRoute
     /**
      * Checks to see if a name is a route
      *
-     * @param string
+     * @param *string
      * @return bool
      */
     public function isRoute($route)

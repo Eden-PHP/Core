@@ -67,6 +67,7 @@ namespace Eden\Core
         /**
          * Sets the PHP timezone
          *
+		 * @param *string
          * @return Eden\Core\Controller
          */
         public function setTimezone($zone)

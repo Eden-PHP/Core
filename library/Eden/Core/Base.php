@@ -117,7 +117,7 @@ class Base
      * We use __invoke to further make classes extended by Eden
      * access other classes easily.
      *
-     * @param string[,mixed..]
+     * @param *string[,mixed..]
      * @return object
      */
     public function __invoke()
@@ -358,7 +358,7 @@ class Base
     /**
      * Invokes When if conditional is false
      *
-     * @param bool
+     * @param *bool
      * @return Eden\Core\Base|Eden\Core\When
      */
     public function when($isTrue, $lines = 0)
@@ -417,7 +417,7 @@ class Base
      * this method we can instantiate while passing
      * construct arguments as arrays
      *
-     * @param string
+     * @param *string
      * @return object
      */
     private static function getInstance($class)

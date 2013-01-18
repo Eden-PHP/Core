@@ -25,7 +25,7 @@ class When extends Base implements \ArrayAccess, \Iterator
     /**
      * Sets the scope and the lines to skip
      *
-     * @param object
+     * @param *object
      * @param int
      * @return void
      */
@@ -48,8 +48,8 @@ class When extends Base implements \ArrayAccess, \Iterator
      * scope when the amount of lines to skip
      * have exceeded, if not will return this class
      *
-     * @param string
-     * @param array
+     * @param *string
+     * @param *array
      * @return object
      */
     public function __call($name, $args)
@@ -102,7 +102,7 @@ class When extends Base implements \ArrayAccess, \Iterator
     /**
      * isset using the ArrayAccess interface
      *
-     * @param scalar|null|bool
+     * @param *scalar|null|bool
      * @return bool
      */
     public function offsetExists($offset)
@@ -116,7 +116,7 @@ class When extends Base implements \ArrayAccess, \Iterator
     /**
      * returns data using the ArrayAccess interface
      *
-     * @param scalar|null|bool
+     * @param *scalar|null|bool
      * @return bool
      */
     public function offsetGet($offset)
@@ -130,8 +130,8 @@ class When extends Base implements \ArrayAccess, \Iterator
     /**
      * Sets data using the ArrayAccess interface
      *
-     * @param scalar|null|bool
-     * @param mixed
+     * @param *scalar|null|bool
+     * @param *mixed
      * @return void
      */
     public function offsetSet($offset, $value)
@@ -141,7 +141,7 @@ class When extends Base implements \ArrayAccess, \Iterator
     /**
      * unsets using the ArrayAccess interface
      *
-     * @param scalar|null|bool
+     * @param *scalar|null|bool
      * @return bool
      */
     public function offsetUnset($offset)
