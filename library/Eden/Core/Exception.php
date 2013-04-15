@@ -57,7 +57,7 @@ class Exception extends \Exception
      */
     public static function i($message = NULL, $code = 0)
     {
-        $class = __CLASS__;
+        $class = get_called_class();
         return new $class($message, $code);
     }
 

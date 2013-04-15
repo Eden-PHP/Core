@@ -19,7 +19,7 @@
 
   <filter>
     <whitelist>
-      <directory suffix=".php">./library/Core/</directory>
+      <directory suffix=".php">./library/Eden/Core/</directory>
     </whitelist>
   </filter>
 </phpunit>
