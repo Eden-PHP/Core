@@ -28,6 +28,8 @@ class Base
     const INSTANCE = 0;
 
     private static $instances = array();
+	
+	private static $states = array();
 
     /**
      * One of the hard thing about instantiating classes is
@@ -178,19 +180,6 @@ class Base
     }
 
     /**
-     * Loops through returned result sets
-     *
-     * @param *callable
-     * @return Eden\Core\Base
-     */
-    public function each($callback)
-    {
-        //argument 1 must be callable
-        Argument::i()->test(1, 'callable');
-        return Loop::i()->iterate($this, $callback);
-    }
-
-    /**
      * Force outputs any class property
      *
      * @param mixed
@@ -261,6 +250,39 @@ class Base
 
         return $this;
     }
+	
+	/**
+     * Returns a state that was previously saved
+     *
+     * @param *string the state name
+     * @return Eden\Core\Base
+     */
+	public function loadState($key) 
+	{
+		if(self::$states[$key]) {
+			return self::$states[$key];
+		}
+		
+		return $this;
+	}
+	
+	/**
+     * Loops through returned result sets
+     *
+     * @param *callable
+     * @return Eden\Core\Base
+     */
+	public function loop($callback, $i = 0) 
+	{
+		//argument 1 must be callable
+        Argument::i()->test(1,'callable');
+		
+		if(call_user_func($callback, $this, $i) !== false) {
+			$this->loop($callback, $i + 1);
+		}
+		
+		return $this;
+	}
 
     /**
      * Attaches an instance to be notified
@@ -318,7 +340,19 @@ class Base
 
         return $this;
     }
-
+	
+	/**
+     * Sets instance state for later usage.
+     *
+     * @param *string the state name
+     * @return Eden\Core\Base
+     */
+	public function setState($key) 
+	{
+		self::$states[$key] = $this;
+		return $this;
+	}
+	
     /**
      * Notify all observers of that a specific
      * event has happened
@@ -356,60 +390,24 @@ class Base
     }
 
     /**
-     * Invokes When if conditional is false
+     * Invokes Callback if conditional callback is true
      *
-     * @param *bool
-     * @return Eden\Core\Base|Eden\Core\When
+     * @param *callable|scalar|null
+     * @param *callable
+     * @return Eden\Core\Base
      */
-    public function when($isTrue, $lines = 0)
+    public function when($conditional, $callback)
     {
         Argument::i()
-            ->test(1, 'bool')  //argument 1 must be a boolean
-            ->test(2, 'int');  //argument 2 must be an integer
+            ->test(1, 'callable', 'scalar', 'null')  //argument 1 must be callable, scalar or null
+            ->test(2, 'callable');  //argument 2 must be callable
 
-        if($isTrue || $lines == 0) {
-            return $this;
-        }
-
-        return When::i($this, $lines);
-    }
-
-    /**
-     * Returns a non-singleton class, while considering routes
-     *
-     * @param string|null
-     * @return object
-     */
-    protected static function getMultiple($class = null)
-    {
-        if(is_null($class) && function_exists('get_called_class')) {
-            $class = get_called_class();
-        }
-
-        $class = Route::i()->getClass()->getRoute($class);
-        return self::getInstance($class);
-    }
-
-    /**
-     * Returns the same instance if instantiated already
-     * while considering routes.
-     *
-     * @param string|null
-     * @return object
-     */
-    protected static function getSingleton($class = null)
-    {
-        if(is_null($class) && function_exists('get_called_class')) {
-            $class = get_called_class();
-        }
-
-        $class = Route::i()->getClass()->getRoute($class);
-
-        if(!isset(self::$instances[$class])) {
-            self::$instances[$class] = self::getInstance($class);
-        }
-
-        return self::$instances[$class];
+        if((is_callable($conditional) && call_user_func($conditional, $this)) 
+		|| (!is_callable($conditional) && $conditional)) {
+			call_user_func($callback, $this);
+		}
+		
+		return $this;
     }
 
     /**
@@ -448,5 +446,43 @@ class Base
                 ->addVariable('new')
                 ->trigger();
         }
+    }
+
+    /**
+     * Returns a non-singleton class, while considering routes
+     *
+     * @param string|null
+     * @return object
+     */
+    protected static function getMultiple($class = null)
+    {
+        if(is_null($class) && function_exists('get_called_class')) {
+            $class = get_called_class();
+        }
+
+        $class = Route::i()->getClass()->getRoute($class);
+        return self::getInstance($class);
+    }
+
+    /**
+     * Returns the same instance if instantiated already
+     * while considering routes.
+     *
+     * @param string|null
+     * @return object
+     */
+    protected static function getSingleton($class = null)
+    {
+        if(is_null($class) && function_exists('get_called_class')) {
+            $class = get_called_class();
+        }
+
+        $class = Route::i()->getClass()->getRoute($class);
+
+        if(!isset(self::$instances[$class])) {
+            self::$instances[$class] = self::getInstance($class);
+        }
+
+        return self::$instances[$class];
     }
 }

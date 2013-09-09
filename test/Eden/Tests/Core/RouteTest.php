@@ -17,10 +17,6 @@ class Eden_Tests_Core_RouteTest extends \PHPUnit_Framework_TestCase
 		//instantiate class
 		$class = eden('core')->route()->getClass('Eden\\Core\\Event');
 		$this->assertInstanceOf('Eden\\Core\\Event', $class);
-		
-		//instantiate class with args
-		$class = eden('core')->route()->getClass('Eden\\Core\\When', array($class));
-		$this->assertInstanceOf('Eden\\Core\\When', $class);
     }
 	
 	public function testGetMethod()

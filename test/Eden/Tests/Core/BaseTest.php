@@ -37,19 +37,15 @@ class Eden_Tests_Core_BaseTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Eden\\Core\\Controller', $class);
     }
 	
-	public function testEach() {
-		$final = null;
-		$lastIndex = 0;
-		
-		eden('core')
-			->route()
-			->each(function($index, $string) use (&$final, &$lastIndex) {
-				$final = $string;
-				$lastIndex = $index;
-			})->getFunction('trim', array('  Something  '));
-		
-		$this->assertEquals('Something', $final);
-		$this->assertEquals(0, $lastIndex);
+	public function testLoop() {
+		$self = $this;
+		eden()->loop(function($instance, $i) use ($self) {
+			$self->assertInstanceOf('Eden\\Core\\Controller', $instance);
+			
+			if($i == 2) {
+				return false;
+			}
+		});
 	}
 	
 	public function testInspect()
@@ -94,31 +90,51 @@ class Eden_Tests_Core_BaseTest extends \PHPUnit_Framework_TestCase
 	
     public function testWhen()
     {
-		$class = eden()->when(true, 1)->setTimezone('GMT');
-		$this->assertInstanceOf('Eden\\Core\\Controller', $class);
+		$test = 'Good';
+		eden()->when(function() {
+			return false;
+		}, function() use (&$test) {
+			$test = 'Bad';
+		});
 		
-		$class = eden()->when(false, 1)->setTimezone('GMT');
-		$this->assertInstanceOf('Eden\\Core\\Controller', $class);
+		$this->assertSame('Good', $test);
 		
-		$class = eden()
-			->when(true, 1)
-			->setTimezone('GMT')
-			->when(false, 1)
-			->setTimezone('GMT');
-		$this->assertInstanceOf('Eden\\Core\\Controller', $class);
+		$test = 'Good';
+		eden()->when(null, function() use (&$test) {
+			$test = 'Bad';
+		});
 		
-		$class = eden()
-			->when(false, 1)
-			->setTimezone('GMT')
-			->when(true, 1)
-			->setTimezone('GMT');
-		$this->assertInstanceOf('Eden\\Core\\Controller', $class);
+		$this->assertSame('Good', $test);
 		
-		$class = eden()
-			->when(false, 2)
-			->setTimezone('GMT');
-			
-		$class = $class->setTimezone('GMT');
-		$this->assertInstanceOf('Eden\\Core\\Controller', $class);
+		$test = 'Good';
+		eden()->when(false, function() use (&$test) {
+			$test = 'Bad';
+		});
+		
+		$this->assertSame('Good', $test);
+		
+		
+		$test = 'Good';
+		eden()->when(function() {
+			return true;
+		}, function() use (&$test) {
+			$test = 'Bad';
+		});
+		
+		$this->assertSame('Bad', $test);
+		
+		$test = 'Good';
+		eden()->when('hi', function() use (&$test) {
+			$test = 'Bad';
+		});
+		
+		$this->assertSame('Bad', $test);
+		
+		$test = 'Good';
+		eden()->when(true, function() use (&$test) {
+			$test = 'Bad';
+		});
+		
+		$this->assertSame('Bad', $test);
     }
 }
