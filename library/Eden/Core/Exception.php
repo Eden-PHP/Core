@@ -35,7 +35,7 @@ class Exception extends \Exception
     const DEBUG       = 'DEBUG';       //used for temporary developer output
     const INFORMATION = 'INFORMATION'; //used for permanent developer notes
 
-    protected $reporter  = NULL;
+    protected $reporter  = null;
     protected $type      = self::LOGIC;
     protected $level     = self::ERROR;
     protected $offset    = 1;
@@ -55,7 +55,7 @@ class Exception extends \Exception
      * @param [mixed[,mixed..]]
      * @return object
      */
-    public static function i($message = NULL, $code = 0)
+    public static function i($message = null, $code = 0)
     {
         $class = get_called_class();
         return new $class($message, $code);

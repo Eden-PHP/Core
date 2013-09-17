@@ -167,8 +167,10 @@ class Route extends Base
     {
 		//argument test
         Argument::i()
-            ->test(1, 'string', 'object')    //argument 1 must be a string or object
-            ->test(2, 'string', 'object');    //argument 2 must be a string or object
+			//argument 1 must be a string or object
+            ->test(1, 'string', 'object')    
+			//argument 2 must be a string or object
+            ->test(2, 'string', 'object');    
 		
 		//if source is an object
         if(is_object($source)) {

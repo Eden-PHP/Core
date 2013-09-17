@@ -37,9 +37,12 @@ class Event extends Base
     public function listen($event, $callable, $important = false)
     {
         Argument::i()
-            ->test(1, 'string')              //argument 1 must be string
-            ->test(2, 'callable', 'null')    //argument 2 must be callable or null
-            ->test(3, 'bool');               //argument 3 must be boolean
+			//argument 1 must be string
+            ->test(1, 'string')              
+			//argument 2 must be callable or null
+            ->test(2, 'callable', 'null')    
+			//argument 3 must be boolean
+            ->test(3, 'bool');               
 
         $id = $this->getId($callable);
 
@@ -108,8 +111,10 @@ class Event extends Base
     public function unlisten($event = null, $callable = null)
     {
         Argument::i()
-            ->test(1, 'string', 'null')     //argument 1 must be string or null
-            ->test(2, 'callable', 'null');  //argument 2 must be callable or null
+			//argument 1 must be string or null
+            ->test(1, 'string', 'null')     
+			//argument 2 must be callable or null
+            ->test(2, 'callable', 'null');  
 
         //if there is no event and no callable
         if(is_null($event) && is_null($callable)) {

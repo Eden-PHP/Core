@@ -40,7 +40,7 @@ namespace Eden\Core
     {
         const INSTANCE = 1;
 
-        protected static $active = NULL;
+        protected static $active = null;
 
         /**
          * Sets active application

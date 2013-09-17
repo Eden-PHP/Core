@@ -68,8 +68,10 @@ class Base
     public function __call($name, $args)
     {
         Argument::i()
-            ->test(1, 'string') //argument 1 must be a string
-            ->test(2, 'array'); //argument 2 must be an array
+			//argument 1 must be a string
+            ->test(1, 'string') 
+			//argument 2 must be an array
+            ->test(2, 'array'); 
 		
 		//if it's a registered method
 		if(isset($this->invokables[$name])) {
@@ -284,9 +286,12 @@ class Base
     public function listen($event, $callable, $important = false)
     {
         Argument::i()
-            ->test(1, 'string')              //argument 1 must be string
-            ->test(2, 'callable', 'null')    //argument 2 must be callable or null
-            ->test(3, 'bool');               //argument 3 must be boolean
+			//argument 1 must be string
+            ->test(1, 'string')              
+			//argument 2 must be callable or null
+            ->test(2, 'callable', 'null')    
+			//argument 3 must be boolean
+            ->test(3, 'bool');               
 
         Event::i()->listen($event, $callable, $important);
 
@@ -304,8 +309,10 @@ class Base
     {
         //argument test
         Argument::i()
-			->test(1, 'string')				//argument 1 must be a string
-			->test(2, 'callable', 'null');  //argument 2 must be callable or null
+			//argument 1 must be a string
+			->test(1, 'string')				
+			//argument 2 must be callable or null
+			->test(2, 'callable', 'null');  
 
         if(is_null($destination)) {
             //when someone calls a class call this instead
@@ -360,8 +367,10 @@ class Base
     public function unlisten($event = null, $callable = null)
     {
         Argument::i()
-            ->test(1, 'string', 'null')     //argument 1 must be a string or null
-            ->test(2, 'callable', 'null');  //argument 2 must be a callable or null
+			//argument 1 must be a string or null
+            ->test(1, 'string', 'null')     
+			//argument 2 must be a callable or null
+            ->test(2, 'callable', 'null');  
 
         Event::i()->unlisten($event, $callable);
 
@@ -378,8 +387,10 @@ class Base
     public function when($conditional, $callback)
     {
         Argument::i()
-            ->test(1, 'callable', 'scalar', 'null')  //argument 1 must be callable, scalar or null
-            ->test(2, 'callable');  //argument 2 must be callable
+			//argument 1 must be callable, scalar or null
+            ->test(1, 'callable', 'scalar', 'null')  
+			//argument 2 must be callable
+            ->test(2, 'callable');  
 
         if((is_callable($conditional) && call_user_func($conditional, $this)) 
 		|| (!is_callable($conditional) && $conditional)) {
