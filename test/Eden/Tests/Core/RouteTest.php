@@ -9,36 +9,49 @@
 
 class Eden_Tests_Core_RouteTest extends \PHPUnit_Framework_TestCase
 {   
-	public function testGetClass()
-    {
-		$class = eden('core')->route()->getClass();
-		$this->assertInstanceOf('Eden\\Core\\Route\\ClassRoute', $class);
-		
-		//instantiate class
-		$class = eden('core')->route()->getClass('Eden\\Core\\Event');
-		$this->assertInstanceOf('Eden\\Core\\Event', $class);
-    }
-	
-	public function testGetMethod()
-    {
-		$class = eden('core')->route()->getMethod();
-		$this->assertInstanceOf('Eden\\Core\\Route\\MethodRoute', $class);
-		
-		//call method with arguments
-		$class = eden('core')->route()->getMethod('Eden\\Core\\Exception', 'setType', array('test'));
+	public function testCall()
+	{
+		$class = eden('core')->route()->call('Eden\\Core\\Exception', 'Something');
 		$this->assertInstanceOf('Eden\\Core\\Exception', $class);
-		
-		//call method with arguments
-		$string = eden('core')->route()->getMethod('Eden\\Core\\Exception', 'getType');
-		$this->assertEquals('LOGIC', $string);
-    }
+	}
+	   
+	public function testCallArray()
+	{
+		$class = eden('core')->route()->callArray('Eden\\Core\\Exception', array('Something'));
+		$this->assertInstanceOf('Eden\\Core\\Exception', $class);
+	}
 	
-	public function testGetFunction()
-    {
-		$class = eden('core')->route()->getFunction();
-		$this->assertInstanceOf('Eden\\Core\\Route\\FunctionRoute', $class);
+	public function testSet()
+	{
+		//renaming a class example
+		$class = eden('core')->route()->set('Test', 'Eden\\Core\\Exception');
+		$this->assertInstanceOf('Eden\\Core\\Route', $class);
 		
-		$string = eden('core')->route()->getFunction('str_replace', array('some', 'no', 'something'));
-		$this->assertEquals('nothing', $string);
-    }
+		$string = eden()->Test()->getType();
+		$this->assertEquals('LOGIC', $string);
+		
+		//shortcut example
+		eden('core')->route()->set('Event', 'Eden\\Core\\Event');
+		$this->assertInstanceOf('Eden\\Core\\Event', eden()->Event());
+	}
+	
+	public function testGet()
+	{
+		$route = eden('core')->route();
+		$this->assertEquals('Eden\\Core\\Exception', $route->get('test'));
+		$this->assertArrayHasKey('test', $route->get());
+	}
+	
+	public function testValid()
+	{
+		$route = eden('core')->route();
+		$this->assertTrue($route->valid('test'));
+		$this->assertFalse($route->valid('another'));
+	}
+	
+	public function testRelease()
+	{
+		$route = eden('core')->route()->release('test');
+		$this->assertFalse($route->valid('test'));
+	}
 }

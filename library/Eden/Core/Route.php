@@ -9,15 +9,9 @@
 
 namespace Eden\Core;
 
-use Eden\Core\Route\ClassRoute;
-use Eden\Core\Route\MethodRoute;
-use Eden\Core\Route\FunctionRoute;
-
 /**
- * Definition for overloading methods and overriding classes.
+ * Definition for overriding classes.
  * This class also provides methods to list out various routes
- * and has the ability to call methods, static methods and
- * functions passing arguments as an array.
  *
  * @vendor Eden
  * @package Core
@@ -26,6 +20,8 @@ use Eden\Core\Route\FunctionRoute;
 class Route extends Base
 {
     protected static $instance = null;
+	
+    protected $route = array();    //class registry
 
     /**
      * One of the hard thing about instantiating classes is
@@ -51,71 +47,144 @@ class Route extends Base
     }
 
     /**
-     * Either instantiates a class given the arguments
-     * or reurns the class router
+     * Calls a class considering all routes.
      *
-     * @param string|null
-     * @param array
+     * @param *string class
+     * @param [variable..] arguments
      * @return object
      */
-    public function getClass($class = null, array $args = array())
+    public function call($class)
     {
-        //argument 1 must be a string or null
-        Argument::i()->test(1, 'string', 'null');
+        //argument 1 must be a string
+        Argument::i()->test(1, 'string');
 
-        $route = ClassRoute::i();
+        $args = func_get_args();
+        $class = array_shift($args);
 
-        if(is_null($class)) {
-            return $route;
-        }
-
-        return $route->callArray($class, $args);
+        return $this->callArray($class, $args);
     }
 
     /**
-     * Either calls a function given the arguments
-     * or reurns the function router
+     * Calls a class considering all routes.
      *
-     * @param string|null
-     * @param array
-     * @return mixed
+     * @param *string class
+     * @param array arguments
+     * @return object
      */
-    public function getFunction($function = null, array $args = array())
+    public function callArray($class, array $args = array())
     {
-        //argument 1 must be a string or null
-        Argument::i()->test(1, 'string', 'null');
+        //argument 1 must be a string
+        Argument::i()->test(1, 'string');
 
-        $route = FunctionRoute::i();
-
-        if(is_null($function)) {
+		//get the true class
+        $route = $this->get($class);
+		
+		//if route is already an abject
+        if(is_object($route)) {
+			//return it
             return $route;
         }
-
-        return $route->callArray($function, $args);
+		
+		//if the static method i exists
+        if(method_exists($route, 'i')) {
+			//instantiate it
+			return forward_static_call_array(array($route, 'i'), $args);
+        }
+		
+		//instantiate it
+        $reflect = new \ReflectionClass($route);
+        return $reflect->newInstanceArgs($args);
     }
 
     /**
-     * Either calls a method given the arguments
-     * or reurns the method router
+     * Returns the class that will be routed to given the route.
      *
-     * @param string|object|null
-     * @param string|null
-     * @param array
-     * @return mixed
+     * @param string|null the class route name
+     * @return string|object|array
      */
-    public function getMethod($class = null, $method = null, array $args = array())
+    public function get($route = null)
     {
+        //argument 1 must be a string or null
+        Argument::i()->test(1, 'string', 'null');
+		
+		//if route is null
+		if(is_null($route)) {
+			//return all routes
+			return $this->route;
+		}
+		
+		//if valid route
+        if($this->valid($route)) {
+			//return route
+            return $this->route[strtolower($route)];
+        }
+		
+		//at this point it is not a route
+		//return the same thing
+        return $route;
+    }
+
+    /**
+     * Checks to see if a name is a route
+     *
+     * @param *string
+     * @return bool
+     */
+    public function valid($route)
+    {
+        //argument 1 must be a string
+        Argument::i()->test(1, 'string');
+
+        return isset($this->route[strtolower($route)]);
+    }
+
+    /**
+     * Unsets the route
+     *
+     * @param *string the class route name
+     * @return Eden\Core\Route
+     */
+    public function release($route)
+    {
+        //argument 1 must be a string
+        Argument::i()->test(1, 'string');
+
+        if($this->valid($route)) {
+            unset($this->route[strtolower($route)]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Routes a class
+     *
+     * @param *string the class route name
+     * @param *string the name of the class to route to
+     * @return Eden\Core\Route
+     */
+    public function set($source, $destination)
+    {
+		//argument test
         Argument::i()
-            ->test(1, 'string', 'object', 'null')  //argument 1 must be a string, object or null
-            ->test(2, 'string', 'null');           //argument 2 must be a string or null
-
-
-        $route = MethodRoute::i();
-
-        if(is_null($class) || is_null($method)) {
-            return $route;
+            ->test(1, 'string', 'object')    //argument 1 must be a string or object
+            ->test(2, 'string', 'object');    //argument 2 must be a string or object
+		
+		//if source is an object
+        if(is_object($source)) {
+			//transform it into string class
+            $source = get_class($source);
         }
 
-        return $route->call($class, $method, $args);
+		//if it is a string
+        if(is_string($destination)) {
+			//we need to consider if this is a vitual class
+            $destination = $this->get($destination);
+        }
+		
+		//now let's route it
+        $this->route[strtolower($source)] = $destination;
+        
+		return $this;
     }
 }

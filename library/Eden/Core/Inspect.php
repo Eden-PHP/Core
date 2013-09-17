@@ -58,7 +58,7 @@ class Inspect extends Base
         //if there's a property name
         if($name) {
             //output that
-            $scope->debug($name);
+            $scope->inspect($name);
             //and return the results
             return $results;
         }

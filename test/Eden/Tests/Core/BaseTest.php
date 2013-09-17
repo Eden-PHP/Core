@@ -39,7 +39,7 @@ class Eden_Tests_Core_BaseTest extends \PHPUnit_Framework_TestCase
 	
 	public function testLoop() {
 		$self = $this;
-		eden()->loop(function($instance, $i) use ($self) {
+		eden()->loop(function($i, $instance) use ($self) {
 			$self->assertInstanceOf('Eden\\Core\\Controller', $instance);
 			
 			if($i == 2) {
@@ -51,12 +51,10 @@ class Eden_Tests_Core_BaseTest extends \PHPUnit_Framework_TestCase
 	public function testInspect()
     {
 		ob_start();
-		eden('core')
-			->route()->inspect(true)
-			->getFunction('trim', array('  Something  '));
+		eden('core')->route()->inspect('Something');
 		$contents = ob_get_contents();
 		ob_end_clean();
-		$this->assertEquals('<pre>INSPECTING Eden\Core\Route->:</pre><pre>Something</pre>', $contents);
+		$this->assertEquals('<pre>INSPECTING Variable:</pre><pre>Something</pre>', $contents);
     }
 	
 	public function testListen()

@@ -30,6 +30,8 @@ class Base
     private static $instances = array();
 	
 	private static $states = array();
+	
+	private static $invokables = array();
 
     /**
      * One of the hard thing about instantiating classes is
@@ -68,7 +70,16 @@ class Base
         Argument::i()
             ->test(1, 'string') //argument 1 must be a string
             ->test(2, 'array'); //argument 2 must be an array
-
+		
+		//if it's a registered method
+		if(isset($this->invokables[$name])) {
+			//do them a favor and pass the instance
+			//into the last part of the argument
+			$args[] = $this;
+			//call and return it
+			return call_user_func_array($this->invokables[$name], $args);
+		}
+		
         //if the method name starts with a capital letter
         //most likely they want a class
         if(preg_match("/^[A-Z]/", $name)) {
@@ -76,30 +87,19 @@ class Base
             //want to load a class so lets try
             try {
                 //return the class
-                return Route::i()->getClass($name, $args);
-            //only if there's a route exception do we want to catch it
+                return Route::i()->callArray($name, $args);
+            //only if there's a Reflection exception do we want to catch it
             //this is because a class can throw an exception in their construct
             //so if that happens then we do know that the class has actually
             //been called and an exception is suppose to happen
-            } catch(RouteException $e) {
-                //Bad class name? try namespacing
-                $class = '\\'.str_replace('_', '\\', $name);
-                //same explanation as the previous try
-                try {
-                    //return the class
-                    return Route::i()->getClass($class, $args);
-                //same explanation as the previous catch
-                } catch(RouteException $e) {
-                } catch(\ReflectionException $e) {}
             } catch(\ReflectionException $e) {
                 //Bad class name? try namespacing
                 $class = '\\'.str_replace('_', '\\', $name);
                 //same explanation as the previous try
                 try {
                     //return the class
-                    return Route::i()->getClass($class, $args);
+                    return Route::i()->callArray($class, $args);
                 //same explanation as the previous catch
-                } catch(RouteException $e) {
                 } catch(\ReflectionException $e) {}
             }
         }
@@ -107,8 +107,8 @@ class Base
         //try to
         try {
             //let the router handle this
-            return Route::i()->getMethod()->call($this, $name, $args);
-        } catch(RouteException $e) {
+            return call_user_func_array(array($this, $name), $args);
+        } catch(Exception $e) {
             //throw the error at this point
             //to get rid of false positives
             Exception::i($e->getMessage())->trigger();
@@ -140,13 +140,13 @@ class Base
         }
 
         //Fix class name
-        $class = 'Eden\\'.ucwords(array_shift($args)).'\\Factory';
-
+        $class = '\\Eden\\'.ucwords(array_shift($args)).'\\Factory';
+		
         //try to
         try {
             //instantiate it
-            return Route::i()->getClass($class, $args);
-        } catch(RouteException $e) {
+            return Route::i()->callArray($class, $args);
+        } catch(Exception $e) {
             //throw the error at this point
             //to get rid of false positives
             Exception::i($e->getMessage())->trigger();
@@ -165,7 +165,7 @@ class Base
 
     /**
      * Calls a method in this class and allows
-     * argumetns to be passed as an array
+     * arguments to be passed as an array
      *
      * @param *string method name
      * @param array arguments
@@ -175,8 +175,8 @@ class Base
     {
         //argument 1 must be a string
         Argument::i()->test(1,'string');
-
-        return Route::i()->getMethod()->call($this, $method, $args);
+		
+		return call_user_func_array(array($this, $method), $args);
     }
 
     /**
@@ -231,18 +231,6 @@ class Base
             return $this;
         }
 
-        //could be private
-        $private = '_'.$variable;
-        //if private variable is set
-        if(isset($this->$private)) {
-            //output it
-            Inspect::i()
-                ->output(sprintf(Inspect::INSPECT, $class.'->'.$private))
-                ->output($this->$private);
-
-            return $this;
-        }
-
         //any other case output variable
         Inspect::i()
             ->output(sprintf(Inspect::INSPECT, 'Variable'))
@@ -277,7 +265,7 @@ class Base
 		//argument 1 must be callable
         Argument::i()->test(1,'callable');
 		
-		if(call_user_func($callback, $this, $i) !== false) {
+		if(call_user_func($callback, $i, $this) !== false) {
 			$this->loop($callback, $i + 1);
 		}
 		
@@ -309,35 +297,25 @@ class Base
      * Creates a class route for this class.
      *
      * @param *string the class route name
+	 * @param callable|null
      * @return Eden\Core\Base
      */
-    public function route($route)
+    public function route($source, $destination = null)
     {
-        //argument 1 must be a string
-        Argument::i()->test(1, 'string');
+        //argument test
+        Argument::i()
+			->test(1, 'string')				//argument 1 must be a string
+			->test(2, 'callable', 'null');  //argument 2 must be callable or null
 
-        if(func_num_args() == 1) {
+        if(is_null($destination)) {
             //when someone calls a class call this instead
-            Route::i()->getClass()->route($route, $this);
+            Route::i()->set($source, $this);
             return $this;
         }
-
-        //argument 2 must be a string
-        Argument::i()->test(2, 'string', 'object');
-
-        $args = func_get_args();
-
-        $source = array_shift($args);
-        $class     = array_shift($args);
-        $destination = null;
-
-        if(count($args)) {
-            $destination = array_shift($args);
-        }
-
-        //when someone calls a method here call something ele instead
-        Route::i()->getMethod()->route($this, $source, $class, $destination);
-
+		
+		//store it
+		$this->invokables[$source] = $desination;
+		
         return $this;
     }
 	
@@ -365,8 +343,9 @@ class Base
         //argument 1 must be string
         Argument::i()->test(1, 'string', 'null');
 
-        $args = func_get_args();
-        Route::i()->getMethod(Event::i(), 'trigger', $args);
+		call_user_func_array(
+			array(Event::i(), 'trigger'),
+			func_get_args());
 
         return $this;
     }
@@ -420,27 +399,36 @@ class Base
      */
     private static function getInstance($class)
     {
+		//get the backtrace
         $trace = debug_backtrace();
         $args = array();
-
+		
+		//the 2nd line is the caller method
         if(isset($trace[1]['args']) && count($trace[1]['args']) > 1) {
+			//get the args
             $args = $trace[1]['args'];
             //shift out the class name
             array_shift($args);
+		//then maybe it's the 3rd line?
         } else if(isset($trace[2]['args']) && count($trace[2]['args']) > 0) {
+			//get the args
             $args = $trace[2]['args'];
         }
-
+		
+		//if there's no args or there's no construct to accept the args
         if(count($args) === 0 || !method_exists($class, '__construct')) {
+			//just return the instantiation
             return new $class;
         }
-
+		
+		//at this point, we need to vitually call the class
         $reflect = new \ReflectionClass($class);
-
-        try {
+		
+        try { //to return the instantiation
             return $reflect->newInstanceArgs($args);
         } catch(\Reflection_Exception $e) {
-            Argument::i()
+			//trigger error
+            Exception::i()
                 ->setMessage(self::ERROR_REFLECTION_ERROR)
                 ->addVariable($class)
                 ->addVariable('new')
@@ -456,11 +444,13 @@ class Base
      */
     protected static function getMultiple($class = null)
     {
+		//super magic sauce getting the callers class
         if(is_null($class) && function_exists('get_called_class')) {
             $class = get_called_class();
         }
-
-        $class = Route::i()->getClass()->getRoute($class);
+		
+		//get routed class, if any
+        $class = Route::i()->get($class);
         return self::getInstance($class);
     }
 
@@ -473,16 +463,21 @@ class Base
      */
     protected static function getSingleton($class = null)
     {
+		//super magic sauce getting the callers class
         if(is_null($class) && function_exists('get_called_class')) {
             $class = get_called_class();
         }
-
-        $class = Route::i()->getClass()->getRoute($class);
-
+		
+		//get routed class, if any
+        $class = Route::i()->get($class);
+		
+		//if it's not set
         if(!isset(self::$instances[$class])) {
+			//set it
             self::$instances[$class] = self::getInstance($class);
         }
-
+		
+		//return the cached version
         return self::$instances[$class];
     }
 }
