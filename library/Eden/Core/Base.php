@@ -24,6 +24,7 @@ use Eden\Core\Route\Exception as RouteException;
 class Base
 {
     const ERROR_REFLECTION = 'Error creating Reflection Class: %s, Method: %s.';
+    const ERROR_CALL = 'Both Physical and Virtual method %s->%s() does not exist.';
 
     const INSTANCE = 0;
 
@@ -32,7 +33,7 @@ class Base
 	private static $states = array();
 	
 	private static $invokables = array();
-
+protected static $_count = 0;
     /**
      * One of the hard thing about instantiating classes is
      * that design patterns can impose different ways of
@@ -66,7 +67,7 @@ class Base
      * @return mixed
      */
     public function __call($name, $args)
-    {
+    { 
         Argument::i()
 			//argument 1 must be a string
             ->test(1, 'string') 
@@ -105,16 +106,13 @@ class Base
                 } catch(\ReflectionException $e) {}
             }
         }
-
-        //try to
-        try {
-            //let the router handle this
-            return call_user_func_array(array($this, $name), $args);
-        } catch(Exception $e) {
-            //throw the error at this point
-            //to get rid of false positives
-            Exception::i($e->getMessage())->trigger();
-        }
+		
+		//let it fail
+		Exception::i()
+			->setMessage(self::ERROR_CALL)
+			->addVariable(get_class($this))
+			->addVariable($name)
+			->trigger();
     }
 
     /**
