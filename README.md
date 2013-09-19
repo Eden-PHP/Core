@@ -1,4 +1,4 @@
-![logo](http://eden.openovate.com/assets/images/logo.png) Eden Core
+![logo](http://eden.openovate.com/assets/images/cloud-social.png) Eden Core
 ====
 
 ## Introduction
