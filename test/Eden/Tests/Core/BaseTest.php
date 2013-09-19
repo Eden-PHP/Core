@@ -51,7 +51,7 @@ class Eden_Tests_Core_BaseTest extends \PHPUnit_Framework_TestCase
 	public function testInspect()
     {
 		ob_start();
-		eden('core')->route()->inspect('Something');
+		eden('core')->event()->inspect('Something');
 		$contents = ob_get_contents();
 		ob_end_clean();
 		$this->assertEquals('<pre>INSPECTING Variable:</pre><pre>Something</pre>', $contents);
