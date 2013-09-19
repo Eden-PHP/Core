@@ -33,7 +33,7 @@ class Base
 	private static $states = array();
 	
 	private static $invokables = array();
-protected static $_count = 0;
+
     /**
      * One of the hard thing about instantiating classes is
      * that design patterns can impose different ways of
