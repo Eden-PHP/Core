@@ -8,6 +8,51 @@ lies in Eden's core. The core's purpose is to give the end developer an easier
 experience in OOP and design patterns while tackling some of the most complicated 
 problems that exist in web development today.
 
+#### Extending your PHP
+
+Setting your classes as a child of Eden\Core\Base empowers your classes to do more. When accepting Eden\Core\Base 
+as a parent you can now instantiate your classes in this manner.
+
+`eden()->YOUR_CLASS_NAME();`
+
+Now you can harness everything eden has to offer:
+
+    eden()->YOUR_CLASS_NAME()
+    
+    // Loop till false is returned
+    ->loop(function($i, $instance) { 
+        //exit loop
+        return false; 
+    })
+    
+    // Conditionals
+    ->when(function($instance) {
+        return true;
+    }, function($instance) {
+        //do something
+    })
+    
+    // Property Inspector
+    ->inspect('AnyProperty')
+    
+    // Event Handling
+    ->listen('some-event', function($event, $instance) {
+        //do something
+    })
+    ->trigger('some-event')
+    
+    // Aliasing Classes
+    ->route('AnotherClass')
+    ->AnotherClass()
+    
+    // Setting and retrieving states
+    ->setState('populated')
+    ->loadState('populated')
+    
+    // Jumping to another class
+    ->Eden_Core_Inspect()
+    ->output('Hello World');
+
 #Contibuting to Eden
 
 ##Setting up your machine with the Eden repository and your fork
