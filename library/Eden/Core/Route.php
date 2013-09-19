@@ -17,7 +17,7 @@ namespace Eden\Core;
  * @package Core
  * @author Christian Blanquera cblanquera@openovate.com
  */
-class Route extends Base
+class Route
 {
     protected static $instance = null;
 	
