@@ -171,7 +171,7 @@ class Base
      * @param array arguments
      * @return mixed
      */
-    public function call($method, array $args = array())
+    public function callArray($method, array $args = array())
     {
         //argument 1 must be a string
         Argument::i()->test(1,'string');

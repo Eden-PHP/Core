@@ -31,9 +31,9 @@ class Eden_Tests_Core_BaseTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('Eden\\Core\\Controller', (string) eden());
     }
 	
-	public function testCall()
+	public function testCallArray()
     {
-		$class = eden()->call('getActiveApp');
+		$class = eden()->callArray('getActiveApp');
 		$this->assertInstanceOf('Eden\\Core\\Controller', $class);
     }
 	
