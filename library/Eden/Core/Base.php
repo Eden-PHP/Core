@@ -140,16 +140,28 @@ class Base
         }
 
         //Fix class name
-        $class = '\\Eden\\'.ucwords(array_shift($args)).'\\Factory';
+		$namespace = ucwords(array_shift($args));
+        $class = '\\Eden\\'.$namespace.'\\Factory';
+		
+		//if factory isn't a class
+		if(!class_exists($class)) {
+			//test reflection of base
+			$inspect = new \ReflectionClass('\\Eden\\'.$namespace.'\\Base');
+			//if it's not abstract
+			if(!$inspect->isAbstract()) {
+				//make class to instantiate the base
+				$class = '\\Eden\\'.$namespace.'\\Base';
+			}
+		}
 		
         //try to
-        try {
+        try { //load factory
             //instantiate it
             return Route::i()->callArray($class, $args);
         } catch(Exception $e) {
-            //throw the error at this point
-            //to get rid of false positives
-            Exception::i($e->getMessage())->trigger();
+			//throw the error at this point
+			//to get rid of false positives
+			Exception::i($e->getMessage())->trigger();
         }
     }
 
