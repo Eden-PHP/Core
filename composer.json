@@ -1,7 +1,7 @@
 {
     "name": "eden-php/core",
     "type": "library",
-    "description": "Designed for rapid prototyping, with less code.",
+    "description": "Eden Core component full of secret sauce",
     "keywords": ["eden", "library"],
     "homepage": "http://eden-php.com",
     "license": "MIT",
@@ -15,6 +15,6 @@
         "php": ">=5.3.1"
     },
     "autoload": {
-         "psr-0": { "Eden\\": "library/" }
+         "psr-0": { "Eden\\Core\\": "" }
     }
 }

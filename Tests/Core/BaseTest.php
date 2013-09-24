@@ -7,7 +7,7 @@
  * distributed with this package.
  */
  
-class Eden_Tests_Core_BaseTest extends \PHPUnit_Framework_TestCase
+class Eden_Core_Tests_Core_BaseTest extends \PHPUnit_Framework_TestCase
 {
     public function test__Call()
     {

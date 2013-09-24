@@ -128,6 +128,7 @@ class Loader
     public function handler($class)
     {
         list($class, $file, $namespace) = $this->getMeta($class);
+		
         if($file && require_once($file)) {
             return true;
         }

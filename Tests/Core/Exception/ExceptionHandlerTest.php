@@ -7,9 +7,17 @@
  * distributed with this package.
  */
  
-class Eden_Tests_Core_ArgumentTest extends \PHPUnit_Framework_TestCase
+class Eden_Core_Tests_Core_Exception_ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testLoad()
+    public function testHandler()
+    {
+    }
+
+    public function testRelease()
+    {
+    }
+
+    public function testRegister()
     {
     }
 }

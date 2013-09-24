@@ -7,5 +7,5 @@
  * distributed with this package.
  */
 
-require_once __DIR__.'/../library/Eden/Core/Loader.php';
+require_once __DIR__.'/../Loader.php';
 Eden\Core\Loader::i()->addRoot(true, 'Eden\\Core')->register()->load('Controller');
