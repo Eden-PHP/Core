@@ -1,5 +1,5 @@
 {
-    "name": "eden-php/core",
+    "name": "eden/core",
     "type": "library",
     "description": "Eden Core component full of secret sauce",
     "keywords": ["eden", "library"],
