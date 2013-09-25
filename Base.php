@@ -340,11 +340,18 @@ class Base
      * Sets instance state for later usage.
      *
      * @param *string the state name
+     * @param mixed
      * @return Eden\Core\Base
      */
-	public function setState($key) 
+	public function setState($key, $value = null) 
 	{
-		self::$states[$key] = $this;
+		if(is_null($value)) {
+			$value = $this;
+		} else if(is_callable($value)) {
+			$value = call_user_func($callback, $this);
+		}
+		
+		self::$states[$key] = $value;
 		return $this;
 	}
 	

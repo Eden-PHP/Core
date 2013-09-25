@@ -1,6 +1,6 @@
 # Instantiating Classes
 
-In Eden, there are many ways to instantiate a class because one of Eden's methodologies is that Eden does not tell you how to build an application. Eden simply provides tools for you to build it faster. First off any class ie. `class Sample\Class {}` can be called as in `Figure 1`.
+In *Eden*, there are many ways to instantiate a class because one of *Eden's* methodologies is that *Eden* does not tell you how to build an application. Eden simply provides tools for you to build it faster. First off any class ie. `class Sample\Class {}` can be called as in `Figure 1`.
 
 **Figure 1. Standard Instantiation**
 
