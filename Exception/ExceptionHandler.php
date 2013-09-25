@@ -76,7 +76,7 @@ class ExceptionHandler extends Event
      */
     public function register()
     {
-        set_error_handler(array($this, 'handler'));
+        set_exception_handler(array($this, 'handler'));
         return $this;
     }
 }

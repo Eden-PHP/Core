@@ -9,6 +9,9 @@
 
 namespace Eden\Core;
 
+use Eden\Core\Exception\ErrorHandler;
+use Eden\Core\Exception\ExceptionHandler;
+
 /**
  * Core Factory Class
  *
@@ -31,6 +34,16 @@ class Factory
     }
 
     /**
+     * Returns the class router class
+     *
+     * @return Eden\Core\Route
+     */
+    public function error()
+    {
+        return ErrorHandler::i();
+    }
+
+    /**
      * Returns the event handler class
      *
      * @return Eden\Core\Event
@@ -38,6 +51,16 @@ class Factory
     public function event()
     {
         return Event::i();
+    }
+
+    /**
+     * Returns the class router class
+     *
+     * @return Eden\Core\Route
+     */
+    public function exception()
+    {
+        return ExceptionHandler::i();
     }
 
     /**

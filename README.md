@@ -10,6 +10,7 @@
 - [Routing](#route)
 - [Classes](#class)
 - [Event Driven](#event)
+- [Error Handling](#error)
 - [Contributing](#contributing)
 
 ====
@@ -600,6 +601,245 @@ In `Figure 28`, we add a trigger passing all possible variables to whatever othe
 
 In the example above, we created a callback that will listen to a success event. When a success event is triggered the callback method will be called passing all the arguments as specified by the trigger.
 
+<a name="error"></a>
+## Error Handling
+
+Error Handling
+
+*Eden* offers a robust error handling solution which is event driven, offers dynamic messaging and can easily be integrated in your application. To prevent conflicts with other libraries, error handling in Eden by default is turned off. To turn on error handling for both errors and exceptions we follow the example below.
+
+**Figure 30. Turn on Custom Error Handling**
+
+	eden('core')
+		->error()
+		->setReporting(E_ALL)
+		->register()
+		->listen('error', 'error');
+		
+	eden('core')
+		->exception()
+		->register()
+		->listen('exception', 'error');
+		
+In `Figure 30`, with `setReporting()`, we first set error reporting to `E_ALL` because some servers have this PHP setting turned off by default. We next register our event handler using `register()` to be called when an error or exception happens. Lastly, we start listening for errors and exceptions with listen and when one is triggered to call `error()`. 
+
+> **Note:** Use can use any callable function in the second argument of `listen()`.
+
+Before we can test if this works we need to create an error handler callback called `error()`. `Figure 31` will demonstrate building a quick and easy one.
+
+**Figure 31. Make an Error Handler**
+
+	function error($event, $type, $level, $class, $file, $line, $message) {
+		$template = '%s %s from %s in %s on line %s. Eden Says: %s';
+		 
+		echo sprintf($template, $type, $level, $class, $file, $line, $message);
+	}
+
+Now let's purposely invoke a PHP warning as in `Figure 32`.
+
+Figure 32. Cause an Warning
+
+	function warning_in_me() {
+		REDS;
+	}
+	 
+	warning_in_me();
+
+> **PHP WARNING** from warning_in_me() in /eden/web/test.php on line 18. Eden Says: Use of undefined constant REDS - assumed 'REDS'
+
+### Back Trace
+
+In our last example we made the error output in a user understandable format. Some other things we can do with errors are send emails. create logs, i18n etc., but we will leave that for another tutorial. Sometimes when working with multiple files we'd like to know where the problem started and a history of events leading up to the error. This is where adding a backtrace can help. In `Figure 33` we add on history to our error function.
+
+**Figure 33. Adding Trace**
+     
+	function error($event, $type, $level, $class, $file, $line, $message, $trace, $offset) {
+		$history = array();
+		for(; isset($trace[$offset]); $offset++) {
+			$row = $trace[$offset];
+			 
+			//lets formulate the method
+			$method = $row['function'].'()';
+			if(isset($row['class'])) {
+				$method = $row['class'].'->'.$method;
+			}
+			 
+			$rowLine = isset($row['line']) ? $row['line'] : 'N/A';
+			$rowFile = isset($row['file']) ? $row['file'] : 'Virtual Call';
+			 
+			//add to history
+			$history[] = array($method, $rowFile, $rowLine);
+		}
+		 
+		echo Eden_Template::i()
+			->setData('history', $history)
+			->setData('type', $type)
+			->setData('level', $level)
+			->setData('class', $class)
+			->setData('file', $file)
+			->setData('line', $line)
+			->setData('message', $message)
+			->parsePhp(dirname(__FILE__).'/template.php');
+	}
+
+*Eden's* error handler actually gives us ten arguments when an error is triggered. We left `$trace` and `$offset` out of `Figure 33` because it wasn't important at the time. What we added in our new `error()` function is a loop that formats each row in our back trace and outputing using `Eden\\Template\\Base` instead.
+
+> **Note:** We cover more about Templating in another section.
+
+What we need to know about `Eden\\Template\\Base` now is that we are setting PHP variables up using `setData()` for use in our PHP template file called *template.php*. Before we can see this in our browser, we first need to create a file called *template.php* in the same location we are testing error handling (test.php).
+
+**Figure 34. Writing the template file (template.php)**
+
+	<p>
+		<strong><?php echo $type; ?> <?php echo $level; ?></strong> from 
+		<strong><?php echo $class; ?></strong> in 
+		<strong><?php echo $file; ?></strong> on line 
+		<strong><?php echo $line; ?></strong>
+	</p>
+	<p><strong>Eden Says:</strong> <?php echo $message; ?></p>
+	<table width="100%" border="1" cellspacing="0" cellpadding="5">
+	<?php foreach($history as $row): ?>
+	<tr>
+		<td><?php echo $row[0]; ?></td>
+		<td><?php echo $row[1]; ?>(<?php echo $row[2]; ?>)</td>
+	</tr>
+	<?php endforeach; ?>
+	</table>
+
+Now when we load up *test.php* up on our browser we get something similar to the following.
+
+> **PHP WARNING** from warning_in_me() in /eden/web/test.php on line 41
+> 
+> Eden Says: Use of undefined constant REDS - assumed 'REDS'
+> 
+> warning_in_me()	/eden/web/test.php(44)
+
+### Exceptions
+
+Exception handing in *Eden* is about the same process as setting up errors shown in Figure 30. We leave the responsibility of explaining custom errors to you. A basic example of triggering errors in an Eden class is shown in `Figure 35`.
+
+**Figure 35. Exceptions**
+
+	class ExceptionInMe {
+		 
+		public function doSomething() {
+			Eden\Core\Exception::i('You triggered an Exception.')->trigger();
+		}
+	}
+ 
+	eden()->ExceptionInMe()->doSomething();
+
+> **Note:** You shouldn't use throw as in `throw new Eden\Core\Exception()` or `throw Eden\Core\Exception::i()` because the back trace will give you more details than you need and looks like a false positive.
+
+If you load this in your browser you should see something like below.
+
+> **LOGIC ERROR** from Eden\\Core\\Exception in /eden/web/test.php on line 47
+> 
+> Eden Says: You triggered an Exception.
+> 
+> ExceptionInMe->doSomething()	/eden/web/test.php(51)
+
+In *Eden*, we introduce more settings to error handling to help categorize errors and the ability to handle different scenarios. The example below shows different settings depending on the kind of error we want to trigger.
+
+**Figure 36. Custom Errors**
+
+	class ExceptionInMe {
+		
+		public function doSomething() {
+			$this->doSomethingElse();
+		}
+		 
+		public function doSomethingElse() {
+			Eden\Core\Exception::i()
+				->setMessage('%s, you triggered an Exception!')
+				->addVariable('Chris')
+				->setType('TESTING')
+				->setLevel('EXTREME')
+				->trigger();
+		}
+	}
+ 
+	eden()->ExceptionInMe()->doSomething();
+
+> **TESTING EXTREME** from Eden_Error in /eden/web/test.php on line 56
+> 
+> Eden Says: Chris, you triggered an Exception!
+> 
+> ExceptionInMe->doSomethingElse()	/eden/web/test.php(47)
+> ExceptionInMe->doSomething()	/eden/web/test.php(60)
+
+In the example above we set the message into a string template, added a variable called `Chris` set the type to `TESTING` and the error level to `EXTREME`.
+
+You can set the error level and error type to anything you want.
+
+### Arguments
+
+One final use of Eden\\Core\\Exception is its ability to test method arguments across different data types. This area seems to be lacking in PHP in general, but it's good practice to first validate arguments passed into a method before using them. Figure 8 shows all the data types you can test for.
+
+**Figure 37. Arguments Testing**
+
+	class Exception_In_Me extends Eden_Class {
+		 
+		public static function i() {
+			return self::_getMultiple(__CLASS__);
+		}
+		 
+		public function doSomething($string, $int, $float, $number, $bool, $null, $stringOrNull, $array, $object, $session) {
+			$this->Eden_Error()
+				->argument(1, 'string')
+				->argument(2, 'int')
+				->argument(3, 'float')
+				->argument(4, 'number', 'numeric')
+				->argument(5, 'bool')
+				->argument(6, 'null')
+				->argument(7, 'string', 'null')
+				->argument(8, 'array')
+				->argument(9, 'object')
+				->argument(10, 'Eden_Session');
+				 
+			echo 'Passed the argument test!';
+		}
+	}
+	 
+	eden()
+		->ExceptionInMe()
+		->doSomething(
+			'Chris', 
+			29, 
+			186.5, 
+			'6', 
+			false, 
+			NULL, 
+			'CEO', 
+			array(), 
+			new stdClass(), 
+			Eden\Session\Base::i()
+		);
+
+If you invalidate any of the passing arguments you will see something like the following.
+
+	eden()
+		->ExceptionInMe()
+		->doSomething(
+			'Chris', 
+			29, 
+			186.5, 
+			'6', 
+			false, 
+			NULL, 
+			85.5, 
+			array(), 
+			new stdClass(), 
+			Eden\Session\Base::i()
+		);
+> **CRITICAL ERROR** from Eden_Error in /eden/web/test.php on line 54
+> 
+> Eden Says: Argument 7 in Exception_In_Me->doSomething() was expecting string or null, however 85.5 was given.
+> 
+> Eden\Core\Argument->test()	/eden/web/test.php(54)
+> ExceptionInMe->doSomething()	/eden/web/test.php(63)
+
+By now you should understand all the advantages with an error handler like Eden's. With Eden as a whole, not only are we making simplier code but, we can also control how strict our applications can be (in other words "idiot proofing"). 
 ====
 
 #Contributing to Eden
