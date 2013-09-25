@@ -606,6 +606,12 @@ In the example above, we created a callback that will listen to a success event.
 
 ##Setting up your machine with the Eden repository and your fork
 
+1. Fork the main Eden repository (https://github.com/Eden-PHP/Core)
+2. Fire up your local terminal and clone the *MAIN EDEN REPOSITORY* (git clone git://github.com/Eden-PHP/Core.git)
+3. Add your *FORKED EDEN REPOSITORY* as a remote (git remote add fork git@github.com:*github_username*/Core.git)
+
+##Making pull requests
+
 1. Before anything, make sure to update the *MAIN EDEN REPOSITORY*. (git checkout master; git pull origin master)
 2. If PHP Unit testing is included in this package please make sure to update it and run the test to ensure everything still works (phpunit)
 3. Once updated with the latest code, create a new branch with a branch name describing what your changes are (git checkout -b bugfix/fix-twitter-auth)
