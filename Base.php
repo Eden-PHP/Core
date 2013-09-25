@@ -127,7 +127,7 @@ class Base
         //if arguments are 0
         if(func_num_args() == 0) {
             //return this
-            return $this;
+            return Route::i()->callArray('\\Eden\\Core\\Controller');
         }
 
         //get the arguments
