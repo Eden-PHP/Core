@@ -837,6 +837,7 @@ If you invalidate any of the passing arguments you will see something like the f
 			new stdClass(), 
 			Eden\Session\Base::i()
 		);
+
 > **CRITICAL ERROR** from Eden_Error in /eden/web/test.php on line 54
 > 
 > Eden Says: Argument 7 in ExceptionInMe->doSomething() was expecting string or null, however 85.5 was given.
