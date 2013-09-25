@@ -635,7 +635,7 @@ Before we can test if this works we need to create an error handler callback cal
 
 Now let's purposely invoke a PHP warning as in `Figure 32`.
 
-Figure 32. Cause an Warning
+**Figure 32. Cause an Warning**
 
 	function warning_in_me() {
 		REDS;
@@ -680,7 +680,7 @@ In our last example we made the error output in a user understandable format. So
 			->parsePhp(dirname(__FILE__).'/template.php');
 	}
 
-*Eden's* error handler actually gives us ten arguments when an error is triggered. We left `$trace` and `$offset` out of `Figure 33` because it wasn't important at the time. What we added in our new `error()` function is a loop that formats each row in our back trace and outputing using `Eden\\Template\\Base` instead.
+*Eden's* error handler actually gives us ten arguments when an error is triggered. We left `$trace` and `$offset` out of `Figure 32` because it wasn't important at the time. What we added in our new `error()` function is a loop that formats each row in our back trace and outputing using `Eden\\Template\\Base` instead.
 
 > **Note:** We cover more about Templating in another section.
 
@@ -714,7 +714,7 @@ Now when we load up *test.php* up on our browser we get something similar to the
 
 ### Exceptions
 
-Exception handing in *Eden* is about the same process as setting up errors shown in Figure 30. We leave the responsibility of explaining custom errors to you. A basic example of triggering errors in an Eden class is shown in `Figure 35`.
+Exception handing in *Eden* is about the same process as setting up errors shown in `Figure 30`. We leave the responsibility of explaining custom errors to you. A basic example of triggering errors in an Eden class is shown in `Figure 35`.
 
 **Figure 35. Exceptions**
 
@@ -772,28 +772,35 @@ You can set the error level and error type to anything you want.
 
 ### Arguments
 
-One final use of Eden\\Core\\Exception is its ability to test method arguments across different data types. This area seems to be lacking in PHP in general, but it's good practice to first validate arguments passed into a method before using them. Figure 8 shows all the data types you can test for.
+One final use of Eden\\Core\\Exception is its ability to test method arguments across different data types. This area seems to be lacking in PHP in general, but it's good practice to first validate arguments passed into a method before using them. `Figure 37` shows all the data types you can test for.
 
 **Figure 37. Arguments Testing**
 
-	class Exception_In_Me extends Eden_Class {
+	class ExceptionInMe {
 		 
-		public static function i() {
-			return self::_getMultiple(__CLASS__);
-		}
-		 
-		public function doSomething($string, $int, $float, $number, $bool, $null, $stringOrNull, $array, $object, $session) {
-			$this->Eden_Error()
-				->argument(1, 'string')
-				->argument(2, 'int')
-				->argument(3, 'float')
-				->argument(4, 'number', 'numeric')
-				->argument(5, 'bool')
-				->argument(6, 'null')
-				->argument(7, 'string', 'null')
-				->argument(8, 'array')
-				->argument(9, 'object')
-				->argument(10, 'Eden_Session');
+		public function doSomething(
+			$string, 
+			$int, 
+			$float, 
+			$number, 
+			$bool, 
+			$null, 
+			$stringOrNull, 
+			$array, 
+			$object, 
+			$session
+		) {
+			Eden\Core\Argument::i()
+				->test(1, 'string')
+				->test(2, 'int')
+				->test(3, 'float')
+				->test(4, 'number', 'numeric')
+				->test(5, 'bool')
+				->test(6, 'null')
+				->test(7, 'string', 'null')
+				->test(8, 'array')
+				->test(9, 'object')
+				->test(10, 'Eden_Session');
 				 
 			echo 'Passed the argument test!';
 		}
@@ -832,12 +839,13 @@ If you invalidate any of the passing arguments you will see something like the f
 		);
 > **CRITICAL ERROR** from Eden_Error in /eden/web/test.php on line 54
 > 
-> Eden Says: Argument 7 in Exception_In_Me->doSomething() was expecting string or null, however 85.5 was given.
+> Eden Says: Argument 7 in ExceptionInMe->doSomething() was expecting string or null, however 85.5 was given.
 > 
 > Eden\Core\Argument->test()	/eden/web/test.php(54)
 > ExceptionInMe->doSomething()	/eden/web/test.php(63)
 
-By now you should understand all the advantages with an error handler like Eden's. With Eden as a whole, not only are we making simplier code but, we can also control how strict our applications can be (in other words "idiot proofing"). 
+By now you should understand all the advantages with an error handler like *Eden's*. With *Eden* as a whole, not only are we making simplier code but, we can also control how strict our applications can be (in other words "idiot proofing"). 
+
 ====
 
 #Contributing to Eden
