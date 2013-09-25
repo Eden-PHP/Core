@@ -24,7 +24,7 @@ It's important that your loop callback eventually returns false to tell Eden tha
 		}
 	});
 
-If you wanted the loop callback to actually manipulate the `$list` array, `Figure 3` can show how this can be acheived.
+In `Figure 2`, we created an array of numbers called `$list` and then passed `$list` into our loop callback using PHP 5.3 `use ($list)`. Sometimes you may want the loop callback to actually manipulate the `$list` array, `Figure 3` can show how this can be acheived.
 
 **Figure 3. Reference Pass**
 
@@ -39,7 +39,7 @@ If you wanted the loop callback to actually manipulate the `$list` array, `Figur
 	
 	print_r($list);
 
-Loops also automatically passes the object from where the origin of the loop began.
+`Figure 3` looks similar like `Figure 2` with the exception of `use (&$list)`, which allows our loop callback to manipulate the array on a global level. Loops also automatically passes the object from where the origin of the loop began.
 
 **Figure 4. Using Instances**
 
@@ -54,3 +54,5 @@ Loops also automatically passes the object from where the origin of the loop beg
 		
 		echo $instance->friends[$i].' ';
 	});
+
+The first thing we did in `Figure 4` was create a class called *User* which extends `Eden\Core\Base`. From here we can instantiate that class and call the `loop()` method which passes our instance of *User* to be used inside of the scope.

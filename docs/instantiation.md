@@ -23,7 +23,7 @@ As long as you start with `eden()`, you can easily instantiate classes and call 
 		}
 	}
 
-Extends `Eden\Core\Base` transforms your `$this` into something as powerful as `eden()`. Much like how Eden calls classes you can instantiate classes with `$this` as in `$this('core')->inspect()` or `$this()->setTimezone('GMT')`. Also any Eden Class as well as any class you define that extends `Eden\Core\Base` can be instantiated as in `Figure 4`.
+Extending `Eden\Core\Base` transforms your `$this` into something as powerful as `eden()`. Much like how Eden calls classes you can instantiate classes with `$this` as in `$this('core')->inspect()` or `$this()->setTimezone('GMT')`. Also any Eden Class as well as any class you define that extends `Eden\Core\Base` can be instantiated as in `Figure 4`.
 
 **Figure 4. The i() Method**
 

@@ -2,7 +2,7 @@
 
 A useful tool when troubleshooting code is Eden's handy inspector feature. At face value you can inspect any kind of variable which would output the value in a readable format
 
-**Figure 1. Output any veriable**
+**Figure 1. Output any variable**
 
 	$hello = 'world';
 	eden()->inspect($hello);
