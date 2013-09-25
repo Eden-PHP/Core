@@ -602,7 +602,7 @@ In the example above, we created a callback that will listen to a success event.
 
 ====
 
-#Contibuting to Eden
+#Contributing to Eden
 
 ##Setting up your machine with the Eden repository and your fork
 
