@@ -80,6 +80,6 @@ In `Figure 5`, we add a trigger passing all possible variables to whatever other
 		mail($email, $subject, $message);
 	});
 
-> **Note: ** Eden\Core\Event, when called will be a singleton. This makes it a global event handler. You can create a separate set of events by simply extending this class.
+> **Note:** Eden\Core\Event, when called will be a singleton. This makes it a global event handler. You can create a separate set of events by simply extending this class.
 
 In the example above, we created a callback that will listen to a success event. When a success event is triggered the callback method will be called passing all the arguments as specified by the trigger.
