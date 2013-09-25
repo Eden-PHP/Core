@@ -604,8 +604,6 @@ In the example above, we created a callback that will listen to a success event.
 <a name="error"></a>
 ## Error Handling
 
-Error Handling
-
 *Eden* offers a robust error handling solution which is event driven, offers dynamic messaging and can easily be integrated in your application. To prevent conflicts with other libraries, error handling in Eden by default is turned off. To turn on error handling for both errors and exceptions we follow the example below.
 
 **Figure 30. Turn on Custom Error Handling**
