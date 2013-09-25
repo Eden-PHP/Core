@@ -601,6 +601,7 @@ In `Figure 28`, we add a trigger passing all possible variables to whatever othe
 
 In the example above, we created a callback that will listen to a success event. When a success event is triggered the callback method will be called passing all the arguments as specified by the trigger.
 
+====
 <a name="error"></a>
 ## Error Handling
 
