@@ -70,7 +70,7 @@ namespace Eden\Core
 		 * @param *string
          * @return Eden\Core\Controller
          */
-        public function setTimezone($zone)
+        public function setTimezone($zone = 'GMT')
         {
             Argument::i()->test(1, 'string');
 
@@ -78,5 +78,17 @@ namespace Eden\Core
 
             return $this;
         }
+	
+		/**
+		 * Starts a session
+		 *
+		 * @return Control
+		 */
+		public function startSession() 
+		{
+			session_start();
+			
+			return $this;
+		}
     }
 }
