@@ -115,9 +115,6 @@ class ErrorHandler extends Event
      */
     public function setReporting($type)
     {
-        //argument 1 must be a string
-        Argument::i()->test(1, 'string');
-
         error_reporting($type);
         return $this;
     }
