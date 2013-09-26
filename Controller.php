@@ -36,7 +36,7 @@ namespace Eden\Core
      * @package Core
      * @author Christian Blanquera cblanquera@openovate.com
      */
-    class Controller extends Base
+    class Controller extends Event
     {
         const INSTANCE = 1;
 
