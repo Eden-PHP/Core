@@ -19,7 +19,7 @@ use Eden\Core\Exception\ExceptionHandler;
  * @package Core
  * @author Christian Blanquera cblanquera@openovate.com
  */
-class Factory
+class Factory extends Base
 {
     const INSTANCE = 1;
 
