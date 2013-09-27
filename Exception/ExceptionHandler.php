@@ -30,7 +30,7 @@ class ExceptionHandler extends Event
      * @param *Exception
      * @return void
      */
-    public function handler(Exception $e)
+    public function handler(\Exception $e)
     {
         //by default set LOGIC ERROR
         $type = Exception::LOGIC;
