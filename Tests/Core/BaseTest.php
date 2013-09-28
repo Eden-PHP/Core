@@ -69,7 +69,7 @@ class Eden_Core_Tests_Core_BaseTest extends \PHPUnit_Framework_TestCase
 	
     public function testRoute()
     {
-		eden('core')->event()->route('E');
+		eden('core')->event()->alias('E');
 		$this->assertInstanceOf('Eden\\Core\\Event', eden()->E());
     }
 

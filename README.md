@@ -6,7 +6,7 @@
 - [Inspector](#inspect)
 - [Conditional](#when)
 - [Looping](#loop)
-- [States](#state)
+- [Alias](#state)
 - [Routing](#route)
 - [Classes](#class)
 - [Event Driven](#event)
@@ -55,11 +55,11 @@ Now you can harness everything eden has to offer:
     ->trigger('some-event')
     
     // Aliasing Classes
-    ->route('AnotherClass')
+    ->alias('AnotherClass')
     ->AnotherClass()
     
     // Setting and retrieving states
-    ->setState('populated')
+    ->saveState('populated')
     ->loadState('populated')
     
     // Jumping to another class
@@ -352,7 +352,7 @@ A new feature of *Eden*, promoting chainability is the use of handling chain sta
 
 **Figure 13. Basic Usage**
 
-	eden()->setState('[YOUR STATE NAME]')->getState('[YOUR STATE NAME]');
+	eden()->saveState('[YOUR STATE NAME]')->loadState('[YOUR STATE NAME]');
 
 `Figure 13` is pretty ambiguous, but let's say you are working on a user registration process. Usually with registration you add the new user to the database and send them an email. We should also mark whether if the email has been sent out or not. We can use states to acheived this process as in `Figure 14`,
 
@@ -369,7 +369,7 @@ A new feature of *Eden*, promoting chainability is the use of handling chain sta
 		//5. save model to user table in database
 		->save('user')
 		//6. save the user model state
-		->setState('user')
+		->saveState('user')
 		
 		//7. load up email
 		->Eden_Mail()
@@ -396,7 +396,7 @@ A new feature of *Eden*, promoting chainability is the use of handling chain sta
 		//15. save model to user table in database
 		->save('user');
 	
-`Figure 14` is quite a mouthful, but let's go over the main parts regarding states. The first 5 steps are about initially saving the user data into our MySQL database. Step 6 `6. save the user model state` saves the instance internally to a key called `user` as in `->setState('user')`. Next, step 7 to 12 are about sending an email out using `Eden\Mail\Smtp`. Then we return back to our user state in step 13 using `->loadState('user')` so we can confirm the email has been sent out by updating that row with step 14 `->setUserValidation(1)`.
+`Figure 14` is quite a mouthful, but let's go over the main parts regarding states. The first 5 steps are about initially saving the user data into our MySQL database. Step 6 `6. save the user model state` saves the instance internally to a key called `user` as in `->saveState('user')`. Next, step 7 to 12 are about sending an email out using `Eden\Mail\Smtp`. Then we return back to our user state in step 13 using `->loadState('user')` so we can confirm the email has been sent out by updating that row with step 14 `->setUserValidation(1)`.
 
 As we can see we never had to leave the chain to accomplish multiple tasks and we never needed to set a variable as well. We can even set any variables to a state.
 
@@ -405,9 +405,9 @@ As we can see we never had to leave the chain to accomplish multiple tasks and w
 **Figure 15. Setting state to a variable**
 
 	$userId = 123;
-	echo eden()->setState('user_id', $userId)->getState('user_id');
+	echo eden()->saveState('user_id', $userId)->loadState('user_id');
 
-In `Figure 15`, we simply created a state and set it to `$userId`. We can now call that state at any time using `->getState('user_id')`.
+In `Figure 15`, we simply created a state and set it to `$userId`. We can now call that state at any time using `->loadState('user_id')`.
 
 > **Note:** All states are shared across every class. Because of ths, *Eden* core does not use states, so you are free to use any key name without fear.
 
@@ -419,7 +419,7 @@ States can also be set to an evaluated value using callback as in `Figure 16`.
 		//1. load user state from Figure 14.
 		->loadState('user')
 		//2. set user id
-		->setState('user_id', function($instance) {
+		->saveState('user_id', function($instance) {
 			return $instance->getUserId();
 		})
 		//3. get the user_id state
@@ -429,18 +429,18 @@ The figure above is a continuation of `Figure 14`. We first load the user model 
 
 ====
 <a name="route"></a>
-## Class Routing
+## Class Routing (Aliasing)
 
 Class routing from *Eden* version 2 to version 3 has become simpler. Routing in *Eden* is similar to page routing in typical MVC frameworks, however in this subject technically called *Polymorphic Routing*. *Eden* has adopted class naming conventions made popular from *Zend Framework* and the *PSR-2* which is in relation to a cascading file system. One annoyance in this system is that class names can get really long. Long class names are harder to remember and ultimately increases the learning curve. Making virtual classes (or aliases to class names) not only makes it easier to remember, but allows developers to customize *Eden* in their own way.
 
 **Figure 17. Virtual Classes**
 
 	//Make an alias for Eden_Session called Session
-	eden('core')->route('My', 'My_Long_Class_Name');
+	eden('core')->alias('My', 'My_Long_Class_Name');
 	
 	// -- OR --
 	
-	eden('core')->route('My', 'My\\Long\\Class\\Name');
+	eden('core')->alias('My', 'My\\Long\\Class\\Name');
 	 
 	//... some where later in your code ...
 	 
@@ -457,7 +457,7 @@ In the example above, we first made an alias to `My\Long\Class\Name` called `My`
 **Figure 18. Virtual Methods**
 
 	//Make an alias for Eden_Tool->output called Eden->out
-	eden()->My()->route('out', function($string) {
+	eden()->My()->alias('out', function($string) {
 		echo $string;
 	});
 	 

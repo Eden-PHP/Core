@@ -315,7 +315,7 @@ class Base
 	 * @param callable|null
      * @return Eden\Core\Base
      */
-    public function route($source, $destination = null)
+    public function alias($source, $destination = null)
     {
         //argument test
         Argument::i()
@@ -343,7 +343,7 @@ class Base
      * @param mixed
      * @return Eden\Core\Base
      */
-	public function setState($key, $value = null) 
+	public function saveState($key, $value = null) 
 	{
 		if(is_null($value)) {
 			$value = $this;
