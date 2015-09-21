@@ -7,21 +7,23 @@
  * distributed with this package.
  */
 
-class Eden_Core_Tests_Core_RouteTest extends \PHPUnit_Framework_TestCase
+namespace Eden\Core\test;
+
+class Route extends \PHPUnit_Framework_TestCase 
 {   
-	public function testCall()
+	public function testCall() 
 	{
 		$class = eden('core')->route()->call('Eden\\Core\\Exception', 'Something');
 		$this->assertInstanceOf('Eden\\Core\\Exception', $class);
 	}
 	   
-	public function testCallArray()
+	public function testCallArray() 
 	{
 		$class = eden('core')->route()->callArray('Eden\\Core\\Exception', array('Something'));
 		$this->assertInstanceOf('Eden\\Core\\Exception', $class);
 	}
 	
-	public function testSet()
+	public function testSet() 
 	{
 		//renaming a class example
 		$class = eden('core')->route()->set('Test', 'Eden\\Core\\Exception');
@@ -35,21 +37,21 @@ class Eden_Core_Tests_Core_RouteTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Eden\\Core\\Event', eden()->Event());
 	}
 	
-	public function testGet()
+	public function testGet() 
 	{
 		$route = eden('core')->route();
 		$this->assertEquals('Eden\\Core\\Exception', $route->get('test'));
 		$this->assertArrayHasKey('test', $route->get());
 	}
 	
-	public function testValid()
+	public function testValid() 
 	{
 		$route = eden('core')->route();
 		$this->assertTrue($route->valid('test'));
 		$this->assertFalse($route->valid('another'));
 	}
 	
-	public function testRelease()
+	public function testRelease() 
 	{
 		$route = eden('core')->route()->release('test');
 		$this->assertFalse($route->valid('test'));

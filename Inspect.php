@@ -1,9 +1,9 @@
 <?php //-->
 /*
- * This file is part of the Core package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+ * This file is part of the Eden package.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -12,29 +12,28 @@ namespace Eden\Core;
 /**
  * Used to inspect classes and result sets
  *
- * @vendor Eden
- * @package Core
- * @author Christian Blanquera cblanquera@openovate.com
+ * @package    Eden
+ * @category   core
+ * @author     Christian Blanquera cblanquera@openovate.com
  */
-class Inspect extends Base
+class Inspect extends Base 
 {
-    const INSTANCE = 1;
+	const INSTANCE 	= 1;
+	const INSPECT 	= 'INSPECTING %s:';
 
-    const INSPECT = 'INSPECTING %s:';
-
-    protected $scope = null;
+	protected $scope = null;
     protected $name  = null;
-
-    /**
+	
+	/**
      * Call a method of the scope and output it
      *
      * @param *string
      * @param *array
      * @return mixed
      */
-    public function __call($name, $args)
-    {
-        Argument::i()
+    public function __call($name, $args) 
+	{
+       Argument::i()
 			//argument 1 must be a string
             ->test(1, 'string') 
 			//argument 2 must be an array
@@ -67,23 +66,25 @@ class Inspect extends Base
 
         //at this point we should output the results
         $class = get_class($scope);
-
-        $this->output(sprintf(self::INSPECT, $class.'->'.$name))->output($results);
+		
+		$output = sprintf(self::INSPECT, $class.'->'.$name);
+		
+        $this->output($output)->output($results);
 
         //and return the results
         return $results;
     }
-
-    /**
+	
+	/**
      * Hijacks the class and reports the results of the next
      * method call
      *
      * @param *object
      * @param string
-     * @return Eden\Core\Inspect
+     * @return this
      */
-    public function next($scope, $name = null)
-    {
+    public function next($scope, $name = null) 
+	{
         Argument::i()
             ->test(1, 'object')          //argument 1 must be an object
             ->test(2, 'string', 'null'); //argument 2 must be a string or null
@@ -98,10 +99,10 @@ class Inspect extends Base
      * Outputs anything
      *
      * @param *mixed any data
-     * @return Eden\Core\Inspect
+     * @return this
      */
-    public function output($variable)
-    {
+    public function output($variable) 
+	{
         if($variable === true) {
             $variable = '*TRUE*';
         } else if($variable === false) {
@@ -113,20 +114,21 @@ class Inspect extends Base
         echo '<pre>'.print_r($variable, true).'</pre>';
         return $this;
     }
-
-    /**
+	
+	/**
      * Virtually calls the scope's method considering routes
      *
      * @param *string
      * @param *array
      * @return mixed
      */
-    protected function getResults($name, $args)
-    {
+    protected function getResults($name, $args) 
+	{
         if(method_exists($this->scope, $name)) {
             return call_user_func_array(array($this->scope, $name), $args);
         }
 
         return $this->scope->call($name, $args);
     }
+	
 }

@@ -6,41 +6,43 @@
  * Copyright and license information can be found at LICENSE
  * distributed with this package.
  */
+namespace Eden\Core\test;
  
-class Eden_Core_Tests_Core_BaseTest extends \PHPUnit_Framework_TestCase
+class Base extends \PHPUnit_Framework_TestCase 
 {
-    public function test__Call()
-    {
-		$class = eden()->Eden_Core_Event();
+    public function test__Call() 
+	{
+		$class = eden()->Core_Event();
 		$this->assertInstanceOf('Eden\\Core\\Event', $class);
     }
 	
-	public function test__Invoke()
-    {
+	public function test__Invoke() 
+	{
 		//eden('core')->event();		means	Eden\Core\Factory 		-> Eden\Core\Event
 		//eden('core')->loader();		means	Eden\Core\Factory 		-> Eden\Core\Loader
 		//eden('core')->route(); 		means 	Eden\Core\Factory 		-> Eden\Core\Route
 		//eden('facebook')->graph();	means	Eden\Facebook\Factory 	-> Eden\Facebook\Graph
 		//eden('utility')->session();	means	Eden\Utility\Factory 	-> Eden\Utility\Session
 		$class = eden('core');
-		$this->assertInstanceOf('Eden\\Core\\Factory', $class);
+		$this->assertInstanceOf('Eden\\Core\\Index', $class);
     }
 	
-	public function test__ToString()
-    {
-		$this->assertEquals('Eden\\Core\\Controller', (string) eden());
+	public function test__ToString() 
+	{
+		$this->assertEquals('Eden\\Core\\Control', (string) eden());
     }
 	
-	public function testCallArray()
-    {
-		$class = eden()->callArray('getActiveApp');
-		$this->assertInstanceOf('Eden\\Core\\Controller', $class);
+	public function testCallArray() 
+	{
+		$class = eden()->callArray('trigger', array('test'));
+		$this->assertInstanceOf('Eden\\Core\\Control', $class);
     }
 	
-	public function testLoop() {
+	public function testLoop() 
+	{
 		$self = $this;
 		eden()->loop(function($i, $instance) use ($self) {
-			$self->assertInstanceOf('Eden\\Core\\Controller', $instance);
+			$self->assertInstanceOf('Eden\\Core\\Control', $instance);
 			
 			if($i == 2) {
 				return false;
@@ -48,8 +50,8 @@ class Eden_Core_Tests_Core_BaseTest extends \PHPUnit_Framework_TestCase
 		});
 	}
 	
-	public function testInspect()
-    {
+	public function testInspect() 
+	{
 		ob_start();
 		eden('core')->event()->inspect('Something');
 		$contents = ob_get_contents();
@@ -57,37 +59,37 @@ class Eden_Core_Tests_Core_BaseTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('<pre>INSPECTING Variable:</pre><pre>Something</pre>', $contents);
     }
 	
-	public function testListen()
+	public function testOn() 
 	{
 		$test = $this;
-		$class = eden()->listen('some-event', function($event, $action) use ($test) {
-			$test->assertEquals('some-event', $action);
+		$class = eden()->on('some-event', function($foo) use ($test) {
+			$test->assertEquals('bar', $foo);
 		});
 		
-		$this->assertInstanceOf('Eden\\Core\\Controller', $class);
+		$this->assertInstanceOf('Eden\\Core\\Control', $class);
 	}
 	
-    public function testRoute()
-    {
+    public function testRoute() 
+	{
 		eden('core')->event()->alias('E');
 		$this->assertInstanceOf('Eden\\Core\\Event', eden()->E());
     }
 
-    public function testTrigger()
-    {
-		$class = eden()->trigger('some-event');
-		$this->assertInstanceOf('Eden\\Core\\Controller', $class);
+    public function testTrigger() 
+	{
+		$class = eden()->trigger('some-event', 'bar');
+		$this->assertInstanceOf('Eden\\Core\\Control', $class);
     }
 
-    public function testUnlisten()
-    {
-		$class = eden()->unlisten('some-event');
-		$this->assertInstanceOf('Eden\\Core\\Controller', $class);
-		eden()->trigger('some-event');
+    public function testOff()
+	{
+		$class = eden()->off('some-event');
+		$this->assertInstanceOf('Eden\\Core\\Control', $class);
+		eden()->trigger('some-event', 'bar');
     }
 	
-    public function testWhen()
-    {
+    public function testWhen() 
+	{
 		$test = 'Good';
 		eden()->when(function() {
 			return false;

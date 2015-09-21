@@ -1,15 +1,13 @@
 <?php //-->
 /*
- * This file is part of the Core package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+ * This file is part of the Eden package.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
 namespace Eden\Core;
-
-use Eden\Core\Route\Exception as RouteException;
 
 /**
  * The base class for all classes wishing to integrate with Eden.
@@ -17,24 +15,22 @@ use Eden\Core\Route\Exception as RouteException;
  * overloaded and overrided as well as provide some basic class
  * loading patterns.
  *
- * @vendor Eden
- * @package Core
- * @author Christian Blanquera cblanquera@openovate.com
+ * @package    Eden
+ * @category   core
+ * @author     Christian Blanquera cblanquera@openovate.com
  */
-class Base
+class Base 
 {
-    const ERROR_REFLECTION = 'Error creating Reflection Class: %s, Method: %s.';
+	const ERROR_REFLECTION = 'Error creating Reflection Class: %s, Method: %s.';
     const ERROR_CALL = 'Both Physical and Virtual method %s->%s() does not exist.';
-
-    const INSTANCE = 0;
-
-    private static $instances = array();
+	
+	const INSTANCE 			= 0;
 	
 	private static $states = array();
-	
+	private static $instances = array();
 	private static $invokables = array();
-
-    /**
+	
+	/**
      * One of the hard thing about instantiating classes is
      * that design patterns can impose different ways of
      * instantiating a class. The word "new" is not flexible.
@@ -47,9 +43,9 @@ class Base
      * @param [mixed[,mixed..]]
      * @return object
      */
-    public static function i()
-    {
-        if(static::INSTANCE === 1) {
+    public static function i() 
+	{
+		if(static::INSTANCE === 1) {
             return self::getSingleton();
         }
 
@@ -66,8 +62,8 @@ class Base
      * @param *array
      * @return mixed
      */
-    public function __call($name, $args)
-    { 
+    public function __call($name, $args) 
+	{ 
         Argument::i()
 			//argument 1 must be a string
             ->test(1, 'string') 
@@ -75,12 +71,12 @@ class Base
             ->test(2, 'array'); 
 		
 		//if it's a registered method
-		if(isset($this->invokables[$name])) {
+		if(isset(self::$invokables[$name])) {
 			//do them a favor and pass the instance
 			//into the last part of the argument
 			$args[] = $this;
 			//call and return it
-			return call_user_func_array($this->invokables[$name], $args);
+			return call_user_func_array(self::$invokables[$name], $args);
 		}
 		
         //if the method name starts with a capital letter
@@ -103,7 +99,11 @@ class Base
                     //return the class
                     return Route::i()->callArray($class, $args);
                 //same explanation as the previous catch
-                } catch(\ReflectionException $e) {}
+                } catch(\ReflectionException $e) {
+					//ok... try invoking
+					array_unshift($args, $name);
+					return call_user_func_array(array($this, '__invoke'), $args);
+				}
             }
         }
 		
@@ -122,12 +122,12 @@ class Base
      * @param *string[,mixed..]
      * @return object
      */
-    public function __invoke()
-    {
+    public function __invoke() 
+	{
         //if arguments are 0
         if(func_num_args() == 0) {
             //return this
-            return Route::i()->callArray('\\Eden\\Core\\Controller');
+            return $this;
         }
 
         //get the arguments
@@ -140,18 +140,25 @@ class Base
         }
 
         //Fix class name
-		$namespace = ucwords(array_shift($args));
-        $class = '\\Eden\\'.$namespace.'\\Factory';
+		$class = $name = ucwords(array_shift($args));
+        
+		//if there is no _ ie. Facebook
+		if(strpos($class, '_') === false) {
+			//make it into Eden_Facebook_Index
+			$class = 'Eden\\' . $class . '\\Index'; 
+		} else {
+			$class = str_replace('_', '\\', $class);
+		}
+		
+		//if this class does not start with Eden ie. Facebook_Graph
+		if(strpos($class, 'Eden\\') !== 0) {
+			//make it into Eden_Facebook_Graph
+			$class = 'Eden\\' . $class;
+		}
 		
 		//if factory isn't a class
 		if(!class_exists($class)) {
-			//test reflection of base
-			$inspect = new \ReflectionClass('\\Eden\\'.$namespace.'\\Base');
-			//if it's not abstract
-			if(!$inspect->isAbstract()) {
-				//make class to instantiate the base
-				$class = '\\Eden\\'.$namespace.'\\Base';
-			}
+			$class = $name;
 		}
 		
         //try to
@@ -170,12 +177,40 @@ class Base
      *
      * @return string
      */
-    public function __toString()
-    {
+    public function __toString() 
+	{
         return get_class($this);
     }
-
+	
     /**
+     * Creates a class route for this class.
+     *
+     * @param *string the class route name
+	 * @param callable|null
+     * @return this
+     */
+    public function alias($source, $destination = null) 
+	{
+        //argument test
+         Argument::i()
+			//argument 1 must be a string
+			->test(1, 'string')				
+			//argument 2 must be callable or null
+			->test(2, 'callable', 'null');  
+
+        if(is_null($destination)) {
+            //when someone calls a class call this instead
+           Route::i()->set($source, $this);
+            return $this;
+        }
+		
+		//store it
+		self::$invokables[$source] = $destination;
+		
+        return $this;
+    }
+	
+	/**
      * Calls a method in this class and allows
      * arguments to be passed as an array
      *
@@ -183,8 +218,8 @@ class Base
      * @param array arguments
      * @return mixed
      */
-    public function callArray($method, array $args = array())
-    {
+    public function callArray($method, array $args = array()) 
+	{
         //argument 1 must be a string
         Argument::i()->test(1,'string');
 		
@@ -196,10 +231,10 @@ class Base
      *
      * @param mixed
      * @param string|null
-     * @return Eden\Core\Base
+     * @return this
      */
-    public function inspect($variable = null, $next = null)
-    {
+    public function inspect($variable = null, $next = null) 
+	{
         //argument 2 must be a string or null
         Argument::i()->test(2, 'string', 'null');
 
@@ -255,7 +290,7 @@ class Base
      * Returns a state that was previously saved
      *
      * @param *string the state name
-     * @return Eden\Core\Base
+     * @return this
      */
 	public function loadState($key) 
 	{
@@ -270,7 +305,7 @@ class Base
      * Loops through returned result sets
      *
      * @param *callable
-     * @return Eden\Core\Base
+     * @return this
      */
 	public function loop($callback, $i = 0) 
 	{
@@ -285,17 +320,37 @@ class Base
 	}
 
     /**
+     * Stops listening to an event
+     *
+     * @param string|null
+     * @param callable|null
+     * @return this
+     */
+    public function off($event = null, $callable = null) 
+	{
+         Argument::i()
+			//argument 1 must be a string or null
+            ->test(1, 'string', 'null')     
+			//argument 2 must be a callable or null
+            ->test(2, 'callable', 'null');  
+
+        Event::i()->off($event, $callable);
+
+        return $this;
+    }
+
+    /**
      * Attaches an instance to be notified
      * when an event has been triggered
      *
      * @param *string
      * @param *callable
      * @param bool
-     * @return Eden\Core\Base
+     * @return this
      */
-    public function listen($event, $callable, $important = false)
-    {
-        Argument::i()
+    public function on($event, $callable, $important = false) 
+	{
+         Argument::i()
 			//argument 1 must be string
             ->test(1, 'string')              
 			//argument 2 must be callable or null
@@ -303,36 +358,8 @@ class Base
 			//argument 3 must be boolean
             ->test(3, 'bool');               
 
-        Event::i()->listen($event, $callable, $important);
+        Event::i()->on($event, $callable, $important);
 
-        return $this;
-    }
-
-    /**
-     * Creates a class route for this class.
-     *
-     * @param *string the class route name
-	 * @param callable|null
-     * @return Eden\Core\Base
-     */
-    public function alias($source, $destination = null)
-    {
-        //argument test
-        Argument::i()
-			//argument 1 must be a string
-			->test(1, 'string')				
-			//argument 2 must be callable or null
-			->test(2, 'callable', 'null');  
-
-        if(is_null($destination)) {
-            //when someone calls a class call this instead
-            Route::i()->set($source, $this);
-            return $this;
-        }
-		
-		//store it
-		$this->invokables[$source] = $desination;
-		
         return $this;
     }
 	
@@ -341,7 +368,7 @@ class Base
      *
      * @param *string the state name
      * @param mixed
-     * @return Eden\Core\Base
+     * @return this
      */
 	public function saveState($key, $value = null) 
 	{
@@ -360,10 +387,10 @@ class Base
      * event has happened
      *
      * @param [string|null[,mixed..]]
-     * @return Eden\Core\Base
+     * @return this
      */
-    public function trigger($event = null)
-    {
+    public function trigger($event = null) 
+	{
         //argument 1 must be string
         Argument::i()->test(1, 'string', 'null');
 
@@ -375,34 +402,14 @@ class Base
     }
 
     /**
-     * Stops listening to an event
-     *
-     * @param string|null
-     * @param callable|null
-     * @return Eden\Core\Base
-     */
-    public function unlisten($event = null, $callable = null)
-    {
-        Argument::i()
-			//argument 1 must be a string or null
-            ->test(1, 'string', 'null')     
-			//argument 2 must be a callable or null
-            ->test(2, 'callable', 'null');  
-
-        Event::i()->unlisten($event, $callable);
-
-        return $this;
-    }
-
-    /**
      * Invokes Callback if conditional callback is true
      *
      * @param *callable|scalar|null
      * @param *callable
-     * @return Eden\Core\Base
+     * @return this
      */
-    public function when($conditional, $callback)
-    {
+    public function when($conditional, $callback) 
+	{
         Argument::i()
 			//argument 1 must be callable, scalar or null
             ->test(1, 'callable', 'scalar', 'null')  
@@ -416,7 +423,52 @@ class Base
 		
 		return $this;
     }
+	
+    /**
+     * Returns a non-singleton class, while considering routes
+     *
+     * @param string|null
+     * @return object
+     */
+    protected static function getMultiple($class = null) 
+	{
+		//super magic sauce getting the callers class
+        if(is_null($class) && function_exists('get_called_class')) {
+            $class = get_called_class();
+        }
+		
+		//get routed class, if any
+        $class = Route::i()->get($class);
+        return self::getInstance($class);
+    }
 
+    /**
+     * Returns the same instance if instantiated already
+     * while considering routes.
+     *
+     * @param string|null
+     * @return object
+     */
+    protected static function getSingleton($class = null) 
+	{
+		//super magic sauce getting the callers class
+        if(is_null($class) && function_exists('get_called_class')) {
+            $class = get_called_class();
+        }
+		
+		//get routed class, if any
+        $class = Route::i()->get($class);
+		
+		//if it's not set
+        if(!isset(self::$instances[$class])) {
+			//set it
+            self::$instances[$class] = self::getInstance($class);
+        }
+		
+		//return the cached version
+        return self::$instances[$class];
+    }
+	
     /**
      * Returns an instance considering routes. With
      * this method we can instantiate while passing
@@ -425,8 +477,8 @@ class Base
      * @param *string
      * @return object
      */
-    private static function getInstance($class)
-    {
+    private static function getInstance($class) 
+	{
 		//get the backtrace
         $trace = debug_backtrace();
         $args = array();
@@ -454,58 +506,13 @@ class Base
 		
         try { //to return the instantiation
             return $reflect->newInstanceArgs($args);
-        } catch(\Reflection_Exception $e) {
+        } catch(\ReflectionException $e) {
 			//trigger error
             Exception::i()
-                ->setMessage(self::ERROR_REFLECTION_ERROR)
+                ->setMessage(self::ERROR_REFLECTION)
                 ->addVariable($class)
                 ->addVariable('new')
                 ->trigger();
         }
-    }
-
-    /**
-     * Returns a non-singleton class, while considering routes
-     *
-     * @param string|null
-     * @return object
-     */
-    protected static function getMultiple($class = null)
-    {
-		//super magic sauce getting the callers class
-        if(is_null($class) && function_exists('get_called_class')) {
-            $class = get_called_class();
-        }
-		
-		//get routed class, if any
-        $class = Route::i()->get($class);
-        return self::getInstance($class);
-    }
-
-    /**
-     * Returns the same instance if instantiated already
-     * while considering routes.
-     *
-     * @param string|null
-     * @return object
-     */
-    protected static function getSingleton($class = null)
-    {
-		//super magic sauce getting the callers class
-        if(is_null($class) && function_exists('get_called_class')) {
-            $class = get_called_class();
-        }
-		
-		//get routed class, if any
-        $class = Route::i()->get($class);
-		
-		//if it's not set
-        if(!isset(self::$instances[$class])) {
-			//set it
-            self::$instances[$class] = self::getInstance($class);
-        }
-		
-		//return the cached version
-        return self::$instances[$class];
     }
 }

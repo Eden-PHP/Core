@@ -1,9 +1,9 @@
 <?php //-->
 /*
- * This file is part of the Core package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+ * This file is part of the Eden package.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -17,45 +17,45 @@ namespace Eden\Core;
  * outputs a trace (can be turned off) that shows where the problem
  * started to where the program stopped.
  *
- * @vendor Eden
- * @package Core
- * @author Christian Blanquera cblanquera@openovate.com
+ * @package    Eden
+ * @category   core
+ * @author     Christian Blanquera cblanquera@openovate.com
  */
-class Argument
+class Argument 
 {
-    const INVALID_ARGUMENT = 'Argument %d in %s() was expecting %s, however %s was given.';
-
-    protected static $stop = false;
-
+	const INVALID_ARGUMENT = 'Argument %d in %s() was expecting %s, however %s was given.';
+	
+	protected static $stop = false;
+	
 	/**
-	 * One of the hard thing about instantiating classes is
-	 * that design patterns can impose different ways of
-	 * instantiating a class. The word "new" is not flexible.
-	 * Authors of classes should be able to control how a class
-	 * is instantiated, while leaving others using the class
-	 * oblivious to it. All in all its one less thing to remember
-	 * for each class call. By default we instantiate classes with
-	 * this method.
-	 *
-	 * @param [mixed[,mixed..]]
-	 * @return object
-	 */
-    public static function i()
-    {
+     * One of the hard thing about instantiating classes is
+     * that design patterns can impose different ways of
+     * instantiating a class. The word "new" is not flexible.
+     * Authors of classes should be able to control how a class
+     * is instantiated, while leaving others using the class
+     * oblivious to it. All in all its one less thing to remember
+     * for each class call. By default we instantiate classes with
+     * this method.
+     *
+     * @param [mixed[,mixed..]]
+     * @return object
+     */
+	public static function i() 
+	{
         $class = __CLASS__;
         return new $class($message, $code);
     }
-
-    /**
+	
+	/**
      * Tests arguments for valid data types
      *
      * @param *int
      * @param *mixed
      * @param *string[,string..]
-     * @return Eden\Core\Argument
+     * @return this
      */
-    public function test($index, $types)
-    {
+    public function test($index, $types) 
+	{
         //if no test
         if(self::$stop) {
             return $this;
@@ -83,8 +83,8 @@ class Argument
      *
      * @return Eden\Core\Argument
      */
-    public function stop()
-    {
+    public function stop() 
+	{
         self::$stop = true;
         return $this;
     }
@@ -98,8 +98,8 @@ class Argument
      * @param *string[,string..]
      * @return Eden\Core\Argument
      */
-    public function virtual($method, array $args, $index, $types)
-    {
+    public function virtual($method, array $args, $index, $types) 
+	{
         //if no test
         if(self::$stop) {
             return $this;
@@ -147,7 +147,8 @@ class Argument
 
         $type = $this->getDataType($argument);
 
-        Exception::i()->setMessage(self::INVALID_ARGUMENT)
+        Exception::i()
+			->setMessage(self::INVALID_ARGUMENT)
             ->addVariable($index + 1)
             ->addVariable($method)
             ->addVariable(implode(' or ', $types))
@@ -156,15 +157,15 @@ class Argument
             ->setTraceOffset($offset)
             ->trigger();
     }
-
+	
 	/**
 	 * Validates a credit card argument.
 	 *
 	 * @param *string
 	 * @return bool
 	 */
-    protected function isCreditCard($value)
-    {
+    protected function isCreditCard($value) 
+	{
         return preg_match('/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]'.
         '{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-'.
         '5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/', $value);
@@ -176,8 +177,8 @@ class Argument
 	 * @param *string
 	 * @return bool
 	 */
-    protected function isEmail($value)
-    {
+    protected function isEmail($value) 
+	{
         return preg_match('/^(?:(?:(?:[^@,"\[\]\x5c\x00-\x20\x7f-\xff\.]|\x5c(?=[@,"\[\]'.
         '\x5c\x00-\x20\x7f-\xff]))(?:[^@,"\[\]\x5c\x00-\x20\x7f-\xff\.]|(?<=\x5c)[@,"\[\]'.
         '\x5c\x00-\x20\x7f-\xff]|\x5c(?=[@,"\[\]\x5c\x00-\x20\x7f-\xff])|\.(?=[^\.])){1,62'.
@@ -194,8 +195,8 @@ class Argument
 	 * @param *string
 	 * @return bool
 	 */
-    protected function isHex($value)
-    {
+    protected function isHex($value) 
+	{
         return preg_match("/^[0-9a-fA-F]{6}$/", $value);
     }
 
@@ -205,8 +206,8 @@ class Argument
 	 * @param *string
 	 * @return bool
 	 */
-    protected function isHtml($value)
-    {
+    protected function isHtml($value) 
+	{
         return preg_match("/<\/?\w+((\s+(\w|\w[\w-]*\w)(\s*=\s*".
         "(?:\".*?\"|'.*?'|[^'\">\s]+))?)+\s*|\s*)\/?>/i", $value);
     }
@@ -217,8 +218,8 @@ class Argument
 	 * @param *string
 	 * @return bool
 	 */
-    protected function isUrl($value)
-    {
+    protected function isUrl($value) 
+	{
         return preg_match('/^(http|https|ftp):\/\/([A-Z0-9][A-Z0'.
         '-9_-]*(?:.[A-Z0-9][A-Z0-9_-]*)+):?(d+)?\/?/i', $value);
     }
@@ -229,8 +230,8 @@ class Argument
 	 * @param *string
 	 * @return bool
 	 */
-    protected function alphaNum($value)
-    {
+    protected function alphaNum($value) 
+	{
         return preg_match('/^[a-zA-Z0-9]+$/', $value);
     }
 
@@ -240,7 +241,8 @@ class Argument
 	 * @param *string
 	 * @return bool
 	 */
-    protected function alphaNumScore($value) {
+    protected function alphaNumScore($value) 
+	{
         return preg_match('/^[a-zA-Z0-9_]+$/', $value);
     }
 
@@ -250,8 +252,8 @@ class Argument
 	 * @param *string
 	 * @return bool
 	 */
-    protected function alphaNumHyphen($value)
-    {
+    protected function alphaNumHyphen($value) 
+	{
         return preg_match('/^[a-zA-Z0-9-]+$/', $value);
     }
 
@@ -261,8 +263,8 @@ class Argument
 	 * @param *string
 	 * @return bool
 	 */
-    protected function alphaNumLine($value)
-    {
+    protected function alphaNumLine($value) 
+	{
         return preg_match('/^[a-zA-Z0-9-_]+$/', $value);
     }
 
@@ -273,8 +275,8 @@ class Argument
 	 * @param *mixed
 	 * @return bool
 	 */
-    protected function isValid($type, $data)
-    {
+    protected function isValid($type, $data) 
+	{
         $type = $this->getTypeName($type);
 
         switch($type) {
@@ -320,15 +322,15 @@ class Argument
 
         return true;
     }
-
+	
 	/**
 	 * Returns the data type of the argument
 	 *
 	 * @param *mixed
 	 * @return string
 	 */
-    private function getDataType($data)
-    {
+    private function getDataType($data) 
+	{
         if(is_string($data)) {
             return "'".$data."'";
         }
@@ -356,15 +358,14 @@ class Argument
         return 'unknown';
     }
 
-
 	/**
 	 * Returns the type name of the argument
 	 *
 	 * @param *mixed
 	 * @return string|void
 	 */
-    private function getTypeName($data)
-    {
+    private function getTypeName($data) 
+	{
         if(is_string($data)) {
             return $data;
         }

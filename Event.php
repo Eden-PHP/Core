@@ -1,9 +1,9 @@
 <?php //-->
 /*
- * This file is part of the Core package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+ * This file is part of the Eden package.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -15,27 +15,27 @@ namespace Eden\Core;
  * on an action. With events you can add extra functionality
  * right after the event has triggered.
  *
- * @vendor Eden
- * @package Core
- * @author Christian Blanquera cblanquera@openovate.com
+ * @package    Eden
+ * @category   core
+ * @author     Christian Blanquera
  */
-class Event extends Base
+class Event extends Base 
 {
-    const INSTANCE = 1;
-
-    protected $observers = array();
-
-    /**
+	const INSTANCE = 1;
+	
+	protected $observers = array();
+	 
+	/**
      * Attaches an instance to be notified
      * when an event has been triggered
      *
      * @param *string
      * @param *callable
      * @param bool
-     * @return Eden\Core\Event
+     * @return this
      */
-    public function listen($event, $callable, $important = false)
-    {
+    public function on($event, $callable, $important = false) 
+	{
         Argument::i()
 			//argument 1 must be string
             ->test(1, 'string')              
@@ -62,54 +62,14 @@ class Event extends Base
     }
 
     /**
-     * Notify all observers of that a specific
-     * event has happened
-     *
-     * @param [string|null[,mixed..]]
-     * @return Eden\Core\Event
-     */
-    public function trigger($event = null)
-    {
-        //argument 1 must be string
-        Argument::i()->test(1, 'string', 'null');
-
-        if(is_null($event)) {
-            $trace = debug_backtrace();
-            $event = $trace[1]['function'];
-            if(isset($trace[1]['class']) && trim($trace[1]['class'])) {
-                $event = str_replace('\\', '-', $trace[1]['class']).'-'.$event;
-            }
-        }
-
-        //get the arguments
-        $args = func_get_args();
-        //shift out the event
-        array_shift($args);
-
-        //as a courtesy lets shift in the object
-        array_unshift($args, $this, $event);
-
-        //for each observer
-        foreach($this->observers as $observer) {
-            //if this is the same event, call the method, if the method returns false
-            if($event == $observer[0] && call_user_func_array($observer[2], $args) === false) {
-                //break out of the loop
-                break;
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * Stops listening to an event
      *
      * @param string|null
      * @param callable|null
-     * @return Eden\Core\Event
+     * @return this
      */
-    public function unlisten($event = null, $callable = null)
-    {
+    public function off($event = null, $callable = null) 
+	{
         Argument::i()
 			//argument 1 must be string or null
             ->test(1, 'string', 'null')     
@@ -145,6 +105,43 @@ class Event extends Base
     }
 
     /**
+     * Notify all observers of that a specific
+     * event has happened
+     *
+     * @param [string|null[,mixed..]]
+     * @return this
+     */
+    public function trigger($event = null) 
+	{
+        //argument 1 must be string
+        Argument::i()->test(1, 'string', 'null');
+
+        if(is_null($event)) {
+            $trace = debug_backtrace();
+            $event = $trace[1]['function'];
+            if(isset($trace[1]['class']) && trim($trace[1]['class'])) {
+                $event = str_replace('\\', '-', $trace[1]['class']).'-'.$event;
+            }
+        }
+
+        //get the arguments
+        $args = func_get_args();
+        //shift out the event
+        array_shift($args);
+
+        //for each observer
+        foreach($this->observers as $observer) {
+            //if this is the same event, call the method, if the method returns false
+            if($event == $observer[0] && call_user_func_array($observer[2], $args) === false) {
+                //break out of the loop
+                break;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * Tries to generate an ID for a callable.
      * We need to try in order to properly unlisten
      * to a variable
@@ -152,8 +149,8 @@ class Event extends Base
      * @param *callable
      * @return string|false
      */
-    protected function getId($callable)
-    {
+    protected function getId($callable) 
+	{
         if(is_array($callable)) {
             if(is_object($callable[0])) {
                 $callable[0] = spl_object_hash($callable[0]);
@@ -168,5 +165,5 @@ class Event extends Base
 
         return false;
     }
-
+	
 }

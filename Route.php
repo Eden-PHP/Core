@@ -1,9 +1,9 @@
 <?php //-->
 /*
- * This file is part of the Core package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+ * This file is part of the Eden package.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -13,17 +13,17 @@ namespace Eden\Core;
  * Definition for overriding classes.
  * This class also provides methods to list out various routes
  *
- * @vendor Eden
- * @package Core
- * @author Christian Blanquera cblanquera@openovate.com
+ * @package    Eden
+ * @category   core
+ * @author     Christian Blanquera cblanquera@openovate.com
  */
-class Route
+class Route 
 {
-    protected static $instance = null;
+	protected $route = array();    //class registry
 	
-    protected $route = array();    //class registry
-
-    /**
+	protected static $instance = null;
+	
+	/**
      * One of the hard thing about instantiating classes is
      * that design patterns can impose different ways of
      * instantiating a class. The word "new" is not flexible.
@@ -36,8 +36,8 @@ class Route
      * @param [mixed[,mixed..]]
      * @return object
      */
-    public static function i()
-    {
+    public static function i() 
+	{
         $class = __CLASS__;
         if(is_null(self::$instance)) {
             self::$instance = new $class();
@@ -45,16 +45,16 @@ class Route
 
         return self::$instance;
     }
-
-    /**
+	
+	/**
      * Calls a class considering all routes.
      *
      * @param *string class
      * @param [variable..] arguments
      * @return object
      */
-    public function call($class)
-    {
+    public function call($class) 
+	{
         //argument 1 must be a string
         Argument::i()->test(1, 'string');
 
@@ -71,8 +71,8 @@ class Route
      * @param array arguments
      * @return object
      */
-    public function callArray($class, array $args = array())
-    {
+    public function callArray($class, array $args = array()) 
+	{
         //argument 1 must be a string
         Argument::i()->test(1, 'string');
 
@@ -102,8 +102,8 @@ class Route
      * @param string|null the class route name
      * @return string|object|array
      */
-    public function get($route = null)
-    {
+    public function get($route = null) 
+	{
         //argument 1 must be a string or null
         Argument::i()->test(1, 'string', 'null');
 		
@@ -130,8 +130,8 @@ class Route
      * @param *string
      * @return bool
      */
-    public function valid($route)
-    {
+    public function valid($route) 
+	{
         //argument 1 must be a string
         Argument::i()->test(1, 'string');
 
@@ -142,10 +142,10 @@ class Route
      * Unsets the route
      *
      * @param *string the class route name
-     * @return Eden\Core\Route
+     * @return this
      */
-    public function release($route)
-    {
+    public function release($route) 
+	{
         //argument 1 must be a string
         Argument::i()->test(1, 'string');
 
@@ -161,10 +161,10 @@ class Route
      *
      * @param *string the class route name
      * @param *string the name of the class to route to
-     * @return Eden\Core\Route
+     * @return this
      */
-    public function set($source, $destination)
-    {
+    public function set($source, $destination) 
+	{
 		//argument test
         Argument::i()
 			//argument 1 must be a string or object
@@ -189,4 +189,5 @@ class Route
         
 		return $this;
     }
+	
 }
