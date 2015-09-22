@@ -6,11 +6,11 @@
  * Copyright and license information can be found at LICENSE
  * distributed with this package.
  */
-require_once __DIR__.'/../Argument.php';
-require_once __DIR__.'/../Base.php';
-require_once __DIR__.'/../Exception.php';
-require_once __DIR__.'/../Route.php';
-require_once __DIR__.'/../Control.php';
-require_once __DIR__.'/../Event.php';
-require_once __DIR__.'/../Index.php';
-require_once __DIR__.'/../Inspect.php';
+require_once __DIR__.'/../src/Argument.php';
+require_once __DIR__.'/../src/Base.php';
+require_once __DIR__.'/../src/Exception.php';
+require_once __DIR__.'/../src/Route.php';
+require_once __DIR__.'/../src/Control.php';
+require_once __DIR__.'/../src/Event.php';
+require_once __DIR__.'/../src/Index.php';
+require_once __DIR__.'/../src/Inspect.php';

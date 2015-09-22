@@ -6,10 +6,7 @@
  * Copyright and license information can be found at LICENSE
  * distributed with this package.
  */
-
-namespace Eden\Core\test;
-
-class Route extends \PHPUnit_Framework_TestCase 
+class EdenCoreRouteTest extends \PHPUnit_Framework_TestCase 
 {   
 	public function testCall() 
 	{

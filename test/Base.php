@@ -6,9 +6,7 @@
  * Copyright and license information can be found at LICENSE
  * distributed with this package.
  */
-namespace Eden\Core\test;
- 
-class Base extends \PHPUnit_Framework_TestCase 
+class EdenCoreBaseTest extends PHPUnit_Framework_TestCase 
 {
     public function test__Call() 
 	{
@@ -32,6 +30,21 @@ class Base extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('Eden\\Core\\Control', (string) eden());
     }
 	
+	public function testAddMethod() 
+	{
+		$self = $this;
+		eden()->addMethod('foo', function() use ($self) {
+			$self->assertInstanceOf('Eden\\Core\\Control', $this);
+			
+			return self::INSTANCE;
+		});
+		
+		$this->assertEquals(1, eden()->foo());
+		
+		eden('core')->event()->addMethod('E');
+		$this->assertInstanceOf('Eden\\Core\\Event', eden()->E());
+    }
+	
 	public function testCallArray() 
 	{
 		$class = eden()->callArray('trigger', array('test'));
@@ -41,8 +54,8 @@ class Base extends \PHPUnit_Framework_TestCase
 	public function testLoop() 
 	{
 		$self = $this;
-		eden()->loop(function($i, $instance) use ($self) {
-			$self->assertInstanceOf('Eden\\Core\\Control', $instance);
+		eden()->loop(function($i) use ($self) {
+			$self->assertInstanceOf('Eden\\Core\\Control', $this);
 			
 			if($i == 2) {
 				return false;
@@ -61,19 +74,15 @@ class Base extends \PHPUnit_Framework_TestCase
 	
 	public function testOn() 
 	{
-		$test = $this;
-		$class = eden()->on('some-event', function($foo) use ($test) {
-			$test->assertEquals('bar', $foo);
+		$self = $this;
+		
+		$class = eden()->on('some-event', function($foo) use ($self) {
+			$self->assertInstanceOf('Eden\\Core\\Control', $this);
+			$self->assertEquals('bar', $foo);
 		});
 		
 		$this->assertInstanceOf('Eden\\Core\\Control', $class);
 	}
-	
-    public function testRoute() 
-	{
-		eden('core')->event()->alias('E');
-		$this->assertInstanceOf('Eden\\Core\\Event', eden()->E());
-    }
 
     public function testTrigger() 
 	{
@@ -90,10 +99,13 @@ class Base extends \PHPUnit_Framework_TestCase
 	
     public function testWhen() 
 	{
+		$self = $this;
 		$test = 'Good';
-		eden()->when(function() {
+		eden()->when(function() use ($self) {
+			$self->assertInstanceOf('Eden\\Core\\Control', $this);
 			return false;
-		}, function() use (&$test) {
+		}, function() use ($self, &$test) {
+			$self->assertInstanceOf('Eden\\Core\\Control', $this);
 			$test = 'Bad';
 		});
 		
@@ -132,6 +144,20 @@ class Base extends \PHPUnit_Framework_TestCase
 		
 		$test = 'Good';
 		eden()->when(true, function() use (&$test) {
+			$test = 'Bad';
+		});
+		
+		$this->assertSame('Bad', $test);
+		
+		$test = 'Not Sure';
+		eden()->when(function() use ($self) {
+			$self->assertInstanceOf('Eden\\Core\\Control', $this);
+			return false;
+		}, function() use ($self, &$test) {
+			$self->assertInstanceOf('Eden\\Core\\Control', $this);
+			$test = 'Good';
+		}, function() use ($self, &$test) {
+			$self->assertInstanceOf('Eden\\Core\\Control', $this);
 			$test = 'Bad';
 		});
 		

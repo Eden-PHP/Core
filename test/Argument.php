@@ -6,10 +6,7 @@
  * Copyright and license information can be found at LICENSE
  * distributed with this package.
  */
-
-namespace Eden\Core\test;
-
-class Argument extends \PHPUnit_Framework_TestCase 
+class EdenCoreArgumentTest extends PHPUnit_Framework_TestCase 
 {
     public function testLoad() 
 	{

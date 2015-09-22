@@ -138,10 +138,12 @@ class Base
             //make the args that
             $args = $args[0];
         }
-
-        //Fix class name
+		
+		//Fix class name
 		$class = $name = ucwords(array_shift($args));
         
+		//Logic for namespaced classes
+		
 		//if there is no _ ie. Facebook
 		if(strpos($class, '_') === false) {
 			//make it into Eden_Facebook_Index
@@ -159,13 +161,31 @@ class Base
 		//if factory isn't a class
 		if(!class_exists($class)) {
 			$class = $name;
+			
+			//Logic for Legacy
+			//if there is no _ ie. Facebook
+			if(strpos($class, '_') === false) {
+				//make it into Eden_Facebook_Index
+				$class = 'Eden_' . $class . '_Index'; 
+			}
+			
+			//if this class does not start with Eden ie. Facebook_Graph
+			if(strpos($class, 'Eden_') !== 0) {
+				//make it into Eden_Facebook_Graph
+				$class = 'Eden_' . $class;
+			}
+			
+			//if factory isn't a class
+			if(!class_exists($class)) {
+				$class = $name;
+			}
 		}
 		
         //try to
         try { //load factory
             //instantiate it
             return Route::i()->callArray($class, $args);
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
 			//throw the error at this point
 			//to get rid of false positives
 			Exception::i($e->getMessage())->trigger();
@@ -189,7 +209,7 @@ class Base
 	 * @param callable|null
      * @return this
      */
-    public function alias($source, $destination = null) 
+    public function addMethod($source, $destination = null) 
 	{
         //argument test
          Argument::i()
@@ -200,9 +220,15 @@ class Base
 
         if(is_null($destination)) {
             //when someone calls a class call this instead
-           Route::i()->set($source, $this);
+            Route::i()->set($source, $this);
             return $this;
         }
+		
+		//if it's an array they meant to bind the callback
+		if(!is_array($destination)) {
+			//so there's no scope
+			$destination = $destination->bindTo($this, get_class($this));
+		}
 		
 		//store it
 		self::$invokables[$source] = $destination;
@@ -312,7 +338,9 @@ class Base
 		//argument 1 must be callable
         Argument::i()->test(1,'callable');
 		
-		if(call_user_func($callback, $i, $this) !== false) {
+		$bound = $callback->bindTo($this, get_class($this));
+		
+		if(call_user_func($bound, $i) !== false) {
 			$this->loop($callback, $i + 1);
 		}
 		
@@ -348,7 +376,7 @@ class Base
      * @param bool
      * @return this
      */
-    public function on($event, $callable, $important = false) 
+    public function on($event, $callback, $important = false) 
 	{
          Argument::i()
 			//argument 1 must be string
@@ -357,8 +385,14 @@ class Base
             ->test(2, 'callable', 'null')    
 			//argument 3 must be boolean
             ->test(3, 'bool');               
-
-        Event::i()->on($event, $callable, $important);
+		
+		//if it's an array they meant to bind the callback
+		if(!is_array($callback)) {
+			//so there's no scope
+			$callback = $callback->bindTo($this, get_class($this));
+		}
+		
+        Event::i()->on($event, $callback, $important);
 
         return $this;
     }
@@ -408,19 +442,51 @@ class Base
      * @param *callable
      * @return this
      */
-    public function when($conditional, $callback) 
+    public function when($conditional, $success, $fail = null) 
 	{
         Argument::i()
 			//argument 1 must be callable, scalar or null
             ->test(1, 'callable', 'scalar', 'null')  
 			//argument 2 must be callable
-            ->test(2, 'callable');  
-
-        if((is_callable($conditional) && call_user_func($conditional, $this)) 
-		|| (!is_callable($conditional) && $conditional)) {
-			call_user_func($callback, $this);
+            ->test(2, 'callable')  
+			//argument 3 must be callable or null
+            ->test(3, 'callable', 'null');  
+		
+		//bind conditional if it's not bound
+		if(is_callable($conditional) && !is_array($conditional)) {
+			$conditional = $conditional->bindTo($this, get_class($this));
 		}
 		
+		//bind success if it's not bound
+		if(is_callable($success) && !is_array($success)) {
+			$success = $success->bindTo($this, get_class($this));
+		}
+		
+		//bind fail if it's not bound
+		if(is_callable($fail) && !is_array($fail)) {
+			$fail = $fail->bindTo($this, get_class($this));
+		}
+		
+		//default results is null
+		$results = null;
+		
+		//if condition is true
+        if((is_callable($conditional) && call_user_func($conditional)) 
+		|| (!is_callable($conditional) && $conditional)) {
+			//call success
+			$results = call_user_func($success);
+		} else if(is_callable($fail)) {
+			//call fail
+			$results = call_user_func($fail);
+		}
+		
+		//do we have results ?
+		if($results !== null) {
+			//then return it
+			return $results;
+		}
+		
+		//otherwise return this
 		return $this;
     }
 	
