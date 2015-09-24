@@ -316,15 +316,15 @@ class Base
      * Returns a state that was previously saved
      *
      * @param *string the state name
-     * @return this
+     * @return this|null
      */
 	public function loadState($key) 
 	{
-		if(self::$states[$key]) {
+		if(isset(self::$states[$key])) {
 			return self::$states[$key];
 		}
 		
-		return $this;
+		return null;
 	}
 	
 	/**
