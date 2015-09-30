@@ -72,9 +72,6 @@ class Base
 		
 		//if it's a registered method
 		if(isset(self::$invokables[$name])) {
-			//do them a favor and pass the instance
-			//into the last part of the argument
-			$args[] = $this;
 			//call and return it
 			return call_user_func_array(self::$invokables[$name], $args);
 		}
