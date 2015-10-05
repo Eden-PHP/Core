@@ -9,25 +9,25 @@
 class EdenCoreEventTest extends PHPUnit_Framework_TestCase 
 {
     public function testOn() 
-	{
-		$test = $this;
-		$class = eden('core')->event()->on('some-event', function($foo) use ($test) {
-			$test->assertEquals('bar', $foo);
-		});
-		
-		$this->assertInstanceOf('Eden\\Core\\Event', $class);
-	}
+    {
+        $test = $this;
+        $class = eden('core')->event()->on('some-event', function($foo) use ($test) {
+            $test->assertEquals('bar', $foo);
+        });
+        
+        $this->assertInstanceOf('Eden\\Core\\Event', $class);
+    }
 
     public function testTrigger() 
-	{
-		$class = eden('core')->event()->trigger('some-event', 'bar');
-		$this->assertInstanceOf('Eden\\Core\\Event', $class);
+    {
+        $class = eden('core')->event()->trigger('some-event', 'bar');
+        $this->assertInstanceOf('Eden\\Core\\Event', $class);
     }
 
     public function testOff() 
-	{
-		$class = eden('core')->event()->off('some-event');
-		$this->assertInstanceOf('Eden\\Core\\Event', $class);
-		eden('core')->event()->trigger('some-event', 'bar');
+    {
+        $class = eden('core')->event()->off('some-event');
+        $this->assertInstanceOf('Eden\\Core\\Event', $class);
+        eden('core')->event()->trigger('some-event', 'bar');
     }
 }

@@ -1,5 +1,5 @@
 <?php //-->
-/*
+/**
  * This file is part of the Eden package.
  * (c) 2014-2016 Openovate Labs
  *
@@ -12,31 +12,32 @@ namespace Eden\Core;
 /**
  * Core Factory Class
  *
- * @package    Eden
- * @category   core
- * @author     Christian Blanquera cblanquera@openovate.com
+ * @package   Eden
+ * @category  Core
+ * @author    Christian Blanquera <cblanquera@openovate.com>
+ * @standard  PSR-2
  */
-class Index extends Base 
+class Index extends Base
 {
-	const INSTANCE = 1;
-	 
-	/**
+    const INSTANCE = 1;
+     
+    /**
      * Returns the argument validation class
      *
      * @return Eden\Core\Argument
      */
-    public function argument() 
-	{
+    public function argument()
+    {
         return Argument::i();
     }
-	
+    
     /**
      * Returns the event class
      *
      * @return Eden\Core\Event
      */
-    public function event() 
-	{
+    public function event()
+    {
         return Event::i();
     }
 
@@ -45,8 +46,8 @@ class Index extends Base
      *
      * @return Eden\Core\Route
      */
-    public function route() 
-	{
+    public function route()
+    {
         return Route::i();
     }
 }

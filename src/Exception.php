@@ -1,5 +1,5 @@
 <?php //-->
-/*
+/**
  * This file is part of the Eden package.
  * (c) 2014-2016 Openovate Labs
  *
@@ -17,32 +17,56 @@ namespace Eden\Core;
  * outputs a _trace (can be turned off) that shows where the problem
  * started to where the program stopped.
  *
- * @vendor Eden
- * @package core
- * @author Christian Blanquera cblanquera@openovate.com
+ * @package   Eden
+ * @category  Core
+ * @author    Christian Blanquera <cblanquera@openovate.com>
+ * @standard  PSR-2
  */
-class Exception extends \Exception 
+class Exception extends \Exception
 {
-	//error _type
+    //error _type
     const ARGUMENT = 'ARGUMENT'; //used when argument is invalidated
-    const LOGIC    = 'LOGIC';    //used when logic is invalidated
-    const GENERAL  = 'GENERAL';  //used when anything in general is invalidated
+    const LOGIC = 'LOGIC';    //used when logic is invalidated
+    const GENERAL = 'GENERAL';  //used when anything in general is invalidated
     const CRITICAL = 'CRITICAL'; //used when anything caused application to crash
 
     //error _level
-    const WARNING     = 'WARNING';
-    const ERROR       = 'ERROR';
-    const DEBUG       = 'DEBUG';       //used for temporary developer output
+    const WARNING = 'WARNING';
+    const ERROR = 'ERROR';
+    const DEBUG = 'DEBUG';       //used for temporary developer output
     const INFORMATION = 'INFORMATION'; //used for permanent developer notes
-	
-	protected $reporter  = null;
-    protected $type      = self::LOGIC;
-    protected $level     = self::ERROR;
-    protected $offset    = 1;
+    
+    /**
+     * @var string|null $reporter class name that it came from
+     */
+    protected $reporter  = null;
+    
+    /**
+     * @var string $type exception type
+     */
+    protected $type = self::LOGIC;
+    
+    /**
+     * @var string $level level of exception
+     */
+    protected $level = self::ERROR;
+    
+    /**
+     * @var int $offset used for false positives on the trace
+     */
+    protected $offset = 1;
+    
+    /**
+     * @var array $variables used for sprintf messages
+     */
     protected $variables = array();
-    protected $trace     = array();
-	
-	/**
+    
+    /**
+     * @var array $trace the back trace
+     */
+    protected $trace = array();
+    
+    /**
      * One of the hard thing about instantiating classes is
      * that design patterns can impose different ways of
      * instantiating a class. The word "new" is not flexible.
@@ -52,23 +76,26 @@ class Exception extends \Exception
      * for each class call. By default we instantiate classes with
      * this method.
      *
-     * @param [mixed[,mixed..]]
+     * @param string|null $message the exception message
+     * @param string|null $code exception code number
+     *
      * @return object
      */
-    public static function i($message = null, $code = 0) 
-	{
+    public static function i($message = null, $code = 0)
+    {
         $class = get_called_class();
         return new $class($message, $code);
     }
-	
-	/**
+    
+    /**
      * Adds parameters used in the message
      *
-	 * @param *scalar
-     * @return this
+     * @param *scalar $variable used for sprintf
+     *
+     * @return Eden\Core\Exception
      */
-    public function addVariable($variable) 
-	{
+    public function addVariable($variable)
+    {
         $this->variables[] = $variable;
         return $this;
     }
@@ -78,8 +105,8 @@ class Exception extends \Exception
      *
      * @return string
      */
-    public function getLevel() 
-	{
+    public function getLevel()
+    {
         return $this->level;
     }
 
@@ -88,8 +115,8 @@ class Exception extends \Exception
      *
      * @return array
      */
-    public function getRawTrace() 
-	{
+    public function getRawTrace()
+    {
         return $this->trace;
     }
 
@@ -98,18 +125,18 @@ class Exception extends \Exception
      *
      * @return string
      */
-    public function getReporter() 
-	{
+    public function getReporter()
+    {
         return $this->reporter;
     }
 
     /**
      * Returns the trace offset; where we should start the trace
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
-    public function getTraceOffset() 
-	{
+    public function getTraceOffset()
+    {
         return $this->offset;
     }
 
@@ -118,8 +145,8 @@ class Exception extends \Exception
      *
      * @return string
      */
-    public function getType() 
-	{
+    public function getType()
+    {
         return $this->type;
     }
 
@@ -128,19 +155,20 @@ class Exception extends \Exception
      *
      * @return array
      */
-    public function getVariables() 
-	{
+    public function getVariables()
+    {
         return $this->variables;
     }
 
     /**
      * Sets exception level
      *
-     * @param *string
-     * @return this
+     * @param *string $level the gravity of the exception
+     *
+     * @return Eden\Core\Exception
      */
-    public function setLevel($level) 
-	{
+    public function setLevel($level)
+    {
         $this->level = $level;
         return $this;
     }
@@ -148,51 +176,52 @@ class Exception extends \Exception
     /**
      * Sets exception level to DEBUG
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
-    public function setLevelDebug() 
-	{
+    public function setLevelDebug()
+    {
         return $this->setLevel(self::DEBUG);
     }
 
     /**
      * Sets exception level to ERROR
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
-    public function setLevelError() 
-	{
+    public function setLevelError()
+    {
         return $this->setLevel(self::WARNING);
     }
 
     /**
      * Sets exception level to INFORMATION
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
-    public function setLevelInformation() 
-	{
+    public function setLevelInformation()
+    {
         return $this->setLevel(self::INFORMATION);
     }
 
     /**
      * Sets exception level to WARNING
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
-    public function setLevelWarning() 
-	{
+    public function setLevelWarning()
+    {
         return $this->setLevel(self::WARNING);
     }
 
     /**
      * Sets message
      *
-     * @param *string
-     * @return this
+     * @param *string $message the Exception message
+     *
+     * @return Eden\Core\Exception
      */
-    public function setMessage($message) 
-	{
+    public function setMessage($message)
+    {
         $this->message = $message;
         return $this;
     }
@@ -200,10 +229,12 @@ class Exception extends \Exception
     /**
      * Sets what index the trace should start at
      *
-     * @return this
+     * @param int $offset for correcting false positives in the trace
+     *
+     * @return Eden\Core\Exception
      */
-    public function setTraceOffset($offset) 
-	{
+    public function setTraceOffset($offset)
+    {
         $this->offset = $offset;
         return $this;
     }
@@ -211,11 +242,12 @@ class Exception extends \Exception
     /**
      * Sets exception type
      *
-     * @param *string
-     * @return this
+     * @param *string $type custom error type
+     *
+     * @return Eden\Core\Exception
      */
-    public function setType($type) 
-	{
+    public function setType($type)
+    {
         $this->type = $type;
         return $this;
     }
@@ -223,70 +255,68 @@ class Exception extends \Exception
     /**
      * Sets exception type to ARGUMENT
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
-    public function setTypeArgument() 
-	{
+    public function setTypeArgument()
+    {
         return $this->setType(self::ARGUMENT);
     }
 
     /**
      * Sets exception type to CRITICAL
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
-    public function setTypeCritical() 
-	{
+    public function setTypeCritical()
+    {
         return $this->setType(self::CRITICAL);
     }
 
     /**
      * Sets exception type to GENERAL
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
-    public function setTypeGeneral() 
-	{
+    public function setTypeGeneral()
+    {
         return $this->setType(self::GENERAL);
     }
 
     /**
      * Sets exception type to LOGIC
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
-    public function setTypeLogic() 
-	{
+    public function setTypeLogic()
+    {
         return $this->setType(self::CRITICAL);
     }
 
     /**
      * Combines parameters with message and throws it
-     *
-     * @return void
      */
-    public function trigger() 
-	{
+    public function trigger()
+    {
         $this->trace = debug_backtrace();
 
         $this->reporter = get_class($this);
-        if(isset($this->trace[$this->offset]['class'])) {
+        if (isset($this->trace[$this->offset]['class'])) {
             $this->reporter = $this->trace[$this->offset]['class'];
         }
 
-        if(isset($this->trace[$this->offset]['file'])) {
+        if (isset($this->trace[$this->offset]['file'])) {
             $this->file = $this->trace[$this->offset]['file'];
         }
 
-        if(isset($this->trace[$this->offset]['line'])) {
+        if (isset($this->trace[$this->offset]['line'])) {
             $this->line = $this->trace[$this->offset]['line'];
         }
 
-        if(!empty($this->variables)) {
+        if (!empty($this->variables)) {
             $this->message = vsprintf($this->message, $this->variables);
             $this->variables = array();
         }
 
         throw $this;
-    }	
+    }
 }
