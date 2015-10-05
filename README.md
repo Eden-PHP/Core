@@ -4,6 +4,16 @@
 - [Install](#install)
 - [Introduction](#intro)
 - [API](#api)
+    - [Add Method](#add-method)
+    - [Call Array](#call-array)
+    - [Inspect](#inspect)
+    - [Load State](#load-state)
+    - [Loop](#loop)
+    - [Off](#off)
+    - [On](#on)
+    - [Save State](#save-state)
+    - [Trigger](#trigger)
+    - [When](#when)
 - [Contributing](#contributing)
 
 ====
@@ -111,7 +121,7 @@ class Foo extends \Eden\Core\Base
 Advanced examples can be found in the `test` folder. It's recommended to review that folder as well.
 
 ====
-
+<a name="add-method"></a>
 ### Add Method
 
 Add a virutal method to an existing instantiation.
@@ -142,7 +152,7 @@ the scope inside that method will be as defined in the callable array. Otherwise
 instance scope will be used.
 
 ====
-
+<a name="call-array"></a>
 ### Call Array
 
 A chainable version of call_user_func_array(). Used for calling current methods vertically.
@@ -166,7 +176,7 @@ eden('core_event')->callArray('inspect', array('observers'));
 `array $args` - Optional - The argument array that will be passed to the specified method horizontally.
 
 ====
-
+<a name="inspect"></a>
 ### Inspect
 
 For debug purposes, using this will output the raw values specified.
@@ -190,7 +200,7 @@ class the raw value will be outputted. If no value is provided, this method will
 properties in the current class.
 
 ====
-
+<a name="load-state"></a>
 ### Load State
 
 Used in conjuction with `eden()->saveState()`, this method will 
@@ -213,7 +223,7 @@ eden()->loadState('foobar');
 `string $name` - Required - The name of the saved state.
 
 ====
-
+<a name="loop"></a>
 ### Loop
 
 A chainable for statement. It is possible to have an infinite loop with this method so test wisely.
@@ -245,7 +255,7 @@ eden()->loop(
 increments by 1 after each time the callback above is called.
 
 ====
-
+<a name="off"></a>
 ### Off
 
 Used in conjunction with `eden()->on()` and `eden()->trigger()`, this removes event 
@@ -271,7 +281,7 @@ if no event is provided, all event handlers will be removed.
 `callable $handler` - Optional - Adding this will remove a particular handler from the specified event.
 
 ====
-
+<a name="on"></a>
 ### On
 
 Used in conjunction with `eden()->off()` and `eden()->trigger()`, this adds an event 
@@ -300,7 +310,7 @@ can be any name you want so long that it's a valid string.
 called if the event is triggered.
 
 ====
-
+<a name="save-state"></a>
 ### Save State
 
 Used in conjuction with `eden()->loadState()`, this method will 
@@ -324,7 +334,7 @@ eden()->saveState('foobar');
 like so long as it's a valid string.
 
 ====
-
+<a name="trigger"></a>
 ### Trigger
 
 Used in conjunction with `eden()->off()` and `eden()->on()`, this triggers the event passing
@@ -351,7 +361,7 @@ can be any name you want so long that it's a valid string.
 all handlers that are listening to the specified event.
 
 ====
-
+<a name="when"></a>
 ### When
 
 A chainable if/else statement.
