@@ -12,10 +12,10 @@ namespace Eden\Core;
 /**
  * Used to inspect classes and result sets
  *
- * @package   Eden
- * @category  Core
- * @author    Christian Blanquera <cblanquera@openovate.com>
- * @standard  PSR-2
+ * @package  Eden
+ * @category Core
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Inspect extends Base
 {
@@ -88,8 +88,8 @@ class Inspect extends Base
      * Hijacks the class and reports the results of the next
      * method call
      *
-     * @param *object      $scope the class instance
-     * @param string|null  $name  the name of the property to inspect
+     * @param *object     $scope the class instance
+     * @param string|null $name  the name of the property to inspect
      *
      * @return Eden\Core\Inspect
      */

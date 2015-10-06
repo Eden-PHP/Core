@@ -15,10 +15,10 @@ namespace Eden\Core;
  * overloaded and overrided as well as provide some basic class
  * loading patterns.
  *
- * @package   Eden
- * @category  Core
- * @author    Christian Blanquera <cblanquera@openovate.com>
- * @standard  PSR-2
+ * @package  Eden
+ * @category Core
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Base
 {
@@ -98,10 +98,10 @@ class Base
             try {
                 //return the class
                 return Route::i()->callArray($name, $args);
-            //only if there's a Reflection exception do we want to catch it
-            //this is because a class can throw an exception in their construct
-            //so if that happens then we do know that the class has actually
-            //been called and an exception is suppose to happen
+                //only if there's a Reflection exception do we want to catch it
+                //this is because a class can throw an exception in their construct
+                //so if that happens then we do know that the class has actually
+                //been called and an exception is suppose to happen
             } catch (\ReflectionException $e) {
                 //Bad class name? try namespacing
                 $class = '\\'.str_replace('_', '\\', $name);
@@ -109,7 +109,7 @@ class Base
                 try {
                     //return the class
                     return Route::i()->callArray($class, $args);
-                //same explanation as the previous catch
+                    //same explanation as the previous catch
                 } catch (\ReflectionException $e) {
                     //ok... try invoking
                     array_unshift($args, $name);
@@ -475,7 +475,7 @@ class Base
      * event has happened
      *
      * @param string|null      $event the event to trigger
-     * @param mixed[, mixed..] $arg the arguments to pass to the handler
+     * @param mixed[, mixed..] $arg   the arguments to pass to the handler
      *
      * @return Eden\Core\Base
      */
@@ -531,7 +531,8 @@ class Base
         
         //if condition is true
         if ((is_callable($conditional) && call_user_func($conditional))
-        || (!is_callable($conditional) && $conditional)) {
+            || (!is_callable($conditional) && $conditional)
+        ) {
             //call success
             $results = call_user_func($success);
         } else if (is_callable($fail)) {
@@ -617,7 +618,7 @@ class Base
             $args = $trace[1]['args'];
             //shift out the class name
             array_shift($args);
-        //then maybe it's the 3rd line?
+            //then maybe it's the 3rd line?
         } else if (isset($trace[2]['args']) && count($trace[2]['args']) > 0) {
             //get the args
             $args = $trace[2]['args'];

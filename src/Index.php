@@ -12,10 +12,10 @@ namespace Eden\Core;
 /**
  * Core Factory Class
  *
- * @package   Eden
- * @category  Core
- * @author    Christian Blanquera <cblanquera@openovate.com>
- * @standard  PSR-2
+ * @package  Eden
+ * @category Core
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Index extends Base
 {

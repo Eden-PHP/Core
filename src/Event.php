@@ -15,10 +15,10 @@ namespace Eden\Core;
  * on an action. With events you can add extra functionality
  * right after the event has triggered.
  *
- * @package   Eden
- * @category  Core
- * @author    Christian Blanquera <cblanquera@openovate.com>
- * @standard  PSR-2
+ * @package  Eden
+ * @category Core
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Event extends Base
 {
@@ -115,7 +115,7 @@ class Event extends Base
      * event has happened
      *
      * @param string|null      $event the event to trigger
-     * @param mixed[, mixed..] $arg the arguments to pass to the handler
+     * @param mixed[, mixed..] $arg   the arguments to pass to the handler
      *
      * @return Eden\Core\Event
      */

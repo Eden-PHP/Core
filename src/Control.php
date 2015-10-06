@@ -31,10 +31,10 @@ namespace
  * Defines the starting point of every framework call.
  * Starts laying out how classes and methods are handled.
  *
- * @package   Eden
- * @category  Core
- * @author    Christian Blanquera <cblanquera@openovate.com>
- * @standard  PSR-2
+ * @package  Eden
+ * @category Core
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 
 namespace Eden\Core

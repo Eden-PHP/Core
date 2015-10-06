@@ -17,10 +17,10 @@ namespace Eden\Core;
  * outputs a trace (can be turned off) that shows where the problem
  * started to where the program stopped.
  *
- * @package   Eden
- * @category  Core
- * @author    Christian Blanquera <cblanquera@openovate.com>
- * @standard  PSR-2
+ * @package  Eden
+ * @category Core
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Argument
 {
@@ -97,10 +97,10 @@ class Argument
     /**
      * Tests virtual arguments for valid data types
      *
-     * @param  *string          $method method name
-     * @param  *array           $args arguments
-     * @param  *int             $index the argument index to test for
-     * @param  *mixed[,mixed..] $types the types to test for
+     * @param *string          $method method name
+     * @param *array           $args   arguments
+     * @param *int             $index  the argument index to test for
+     * @param *mixed[,mixed..] $types  the types to test for
      *
      * @return Eden\Core\Argument
      */

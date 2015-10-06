@@ -13,10 +13,10 @@ namespace Eden\Core;
  * Definition for overriding classes.
  * This class also provides methods to list out various routes
  *
- * @package   Eden
- * @category  Core
- * @author    Christian Blanquera <cblanquera@openovate.com>
- * @standard  PSR-2
+ * @package  Eden
+ * @category Core
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Route
 {

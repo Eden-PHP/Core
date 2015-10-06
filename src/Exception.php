@@ -17,10 +17,10 @@ namespace Eden\Core;
  * outputs a _trace (can be turned off) that shows where the problem
  * started to where the program stopped.
  *
- * @package   Eden
- * @category  Core
- * @author    Christian Blanquera <cblanquera@openovate.com>
- * @standard  PSR-2
+ * @package  Eden
+ * @category Core
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Exception extends \Exception
 {
@@ -77,7 +77,7 @@ class Exception extends \Exception
      * this method.
      *
      * @param string|null $message the exception message
-     * @param string|null $code exception code number
+     * @param string|null $code    exception code number
      *
      * @return object
      */
