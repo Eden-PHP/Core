@@ -1,5 +1,7 @@
 ![logo](http://eden.openovate.com/assets/images/cloud-social.png) Eden Core
 ====
+[![Build Status](https://api.travis-ci.org/Eden-PHP/Core.svg?branch=v4)](https://travis-ci.org/Eden-PHP/Core)
+====
 
 - [Install](#install)
 - [Introduction](#intro)
