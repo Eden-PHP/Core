@@ -9,11 +9,15 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="Tests/bootstrap.php"
+         bootstrap="test/bootstrap.php"
 >
   <testsuites>
     <testsuite name="Eden Core Test Suite">
-      <directory>./Tests/Core</directory>
+      <file>test/Exception.php</file>
+      <file>test/Argument.php</file>
+      <file>test/Route.php</file>
+      <file>test/Event.php</file>
+      <file>test/Base.php</file>
     </testsuite>
   </testsuites>
 

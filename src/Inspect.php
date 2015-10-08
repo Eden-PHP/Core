@@ -1,9 +1,9 @@
 <?php //-->
-/*
- * This file is part of the Core package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+/**
+ * This file is part of the Eden package.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -12,36 +12,44 @@ namespace Eden\Core;
 /**
  * Used to inspect classes and result sets
  *
- * @vendor Eden
- * @package Core
- * @author Christian Blanquera cblanquera@openovate.com
+ * @package  Eden
+ * @category Core
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Inspect extends Base
 {
-    const INSTANCE = 1;
-
-    const INSPECT = 'INSPECTING %s:';
-
+    const INSTANCE     = 1;
+    const INSPECT     = 'INSPECTING %s:';
+    
+    /**
+     * @var object|null $scope the inspected instance
+     */
     protected $scope = null;
+    
+    /**
+     * @var string|null $name name of method to be used before/after inspection
+     */
     protected $name  = null;
-
+    
     /**
      * Call a method of the scope and output it
      *
-     * @param *string
-     * @param *array
+     * @param *string $name the name of the method
+     * @param *array  $args arguments that were passed
+     *
      * @return mixed
      */
     public function __call($name, $args)
     {
         Argument::i()
-			//argument 1 must be a string
-            ->test(1, 'string') 
-			//argument 2 must be an array
-            ->test(2, 'array'); 
+            //argument 1 must be a string
+            ->test(1, 'string')
+            //argument 2 must be an array
+            ->test(2, 'array');
 
         //if the scope is null
-        if(is_null($this->scope)) {
+        if (is_null($this->scope)) {
             //just call the parent
             return parent::__call($name, $args);
         }
@@ -58,7 +66,7 @@ class Inspect extends Base
         $this->scope = null;
 
         //if there's a property name
-        if($name) {
+        if ($name) {
             //output that
             $scope->inspect($name);
             //and return the results
@@ -67,19 +75,22 @@ class Inspect extends Base
 
         //at this point we should output the results
         $class = get_class($scope);
-
-        $this->output(sprintf(self::INSPECT, $class.'->'.$name))->output($results);
+        
+        $output = sprintf(self::INSPECT, $class.'->'.$name);
+        
+        $this->output($output)->output($results);
 
         //and return the results
         return $results;
     }
-
+    
     /**
      * Hijacks the class and reports the results of the next
      * method call
      *
-     * @param *object
-     * @param string
+     * @param *object     $scope the class instance
+     * @param string|null $name  the name of the property to inspect
+     *
      * @return Eden\Core\Inspect
      */
     public function next($scope, $name = null)
@@ -97,33 +108,35 @@ class Inspect extends Base
     /**
      * Outputs anything
      *
-     * @param *mixed any data
+     * @param *mixed $variable any data
+     *
      * @return Eden\Core\Inspect
      */
     public function output($variable)
     {
-        if($variable === true) {
+        if ($variable === true) {
             $variable = '*TRUE*';
-        } else if($variable === false) {
+        } else if ($variable === false) {
             $variable = '*FALSE*';
-        } else if(is_null($variable)) {
+        } else if (is_null($variable)) {
             $variable = '*null*';
         }
 
         echo '<pre>'.print_r($variable, true).'</pre>';
         return $this;
     }
-
+    
     /**
      * Virtually calls the scope's method considering routes
      *
-     * @param *string
-     * @param *array
+     * @param *string $name the name of the method
+     * @param *array  $args arguments to pass
+     *
      * @return mixed
      */
     protected function getResults($name, $args)
     {
-        if(method_exists($this->scope, $name)) {
+        if (method_exists($this->scope, $name)) {
             return call_user_func_array(array($this->scope, $name), $args);
         }
 

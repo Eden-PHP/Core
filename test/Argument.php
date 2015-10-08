@@ -6,18 +6,9 @@
  * Copyright and license information can be found at LICENSE
  * distributed with this package.
  */
- 
-class Eden_Core_Tests_Core_Exception_ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
+class EdenCoreArgumentTest extends PHPUnit_Framework_TestCase 
 {
-    public function testHandler()
-    {
-    }
-
-    public function testRelease()
-    {
-    }
-
-    public function testRegister()
+    public function testLoad() 
     {
     }
 }

@@ -1,9 +1,9 @@
 <?php //-->
-/*
- * This file is part of the Core package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+/**
+ * This file is part of the Eden package.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -13,35 +13,59 @@ namespace Eden\Core;
  * The base class for any class handling exceptions. Exceptions
  * allow an application to custom handle errors that would
  * normally let the system handle. This exception allows you to
- * specify error levels and error types. Also using this exception
- * outputs a trace (can be turned off) that shows where the problem
+ * specify error _levels and error _types. Also using this exception
+ * outputs a _trace (can be turned off) that shows where the problem
  * started to where the program stopped.
  *
- * @vendor Eden
- * @package Core
- * @author Christian Blanquera cblanquera@openovate.com
+ * @package  Eden
+ * @category Core
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Exception extends \Exception
 {
-    //error type
+    //error _type
     const ARGUMENT = 'ARGUMENT'; //used when argument is invalidated
-    const LOGIC    = 'LOGIC';    //used when logic is invalidated
-    const GENERAL  = 'GENERAL';  //used when anything in general is invalidated
+    const LOGIC = 'LOGIC';    //used when logic is invalidated
+    const GENERAL = 'GENERAL';  //used when anything in general is invalidated
     const CRITICAL = 'CRITICAL'; //used when anything caused application to crash
 
-    //error level
-    const WARNING     = 'WARNING';
-    const ERROR       = 'ERROR';
-    const DEBUG       = 'DEBUG';       //used for temporary developer output
+    //error _level
+    const WARNING = 'WARNING';
+    const ERROR = 'ERROR';
+    const DEBUG = 'DEBUG';       //used for temporary developer output
     const INFORMATION = 'INFORMATION'; //used for permanent developer notes
-
+    
+    /**
+     * @var string|null $reporter class name that it came from
+     */
     protected $reporter  = null;
-    protected $type      = self::LOGIC;
-    protected $level     = self::ERROR;
-    protected $offset    = 1;
+    
+    /**
+     * @var string $type exception type
+     */
+    protected $type = self::LOGIC;
+    
+    /**
+     * @var string $level level of exception
+     */
+    protected $level = self::ERROR;
+    
+    /**
+     * @var int $offset used for false positives on the trace
+     */
+    protected $offset = 1;
+    
+    /**
+     * @var array $variables used for sprintf messages
+     */
     protected $variables = array();
-    protected $trace     = array();
-
+    
+    /**
+     * @var array $trace the back trace
+     */
+    protected $trace = array();
+    
     /**
      * One of the hard thing about instantiating classes is
      * that design patterns can impose different ways of
@@ -52,7 +76,9 @@ class Exception extends \Exception
      * for each class call. By default we instantiate classes with
      * this method.
      *
-     * @param [mixed[,mixed..]]
+     * @param string|null $message the exception message
+     * @param string|null $code    exception code number
+     *
      * @return object
      */
     public static function i($message = null, $code = 0)
@@ -60,11 +86,12 @@ class Exception extends \Exception
         $class = get_called_class();
         return new $class($message, $code);
     }
-
+    
     /**
      * Adds parameters used in the message
      *
-	 * @param *scalar
+     * @param *scalar $variable used for sprintf
+     *
      * @return Eden\Core\Exception
      */
     public function addVariable($variable)
@@ -94,7 +121,7 @@ class Exception extends \Exception
     }
 
     /**
-     * REturns the class or method that caught this
+     * Returns the class or method that caught this
      *
      * @return string
      */
@@ -106,7 +133,7 @@ class Exception extends \Exception
     /**
      * Returns the trace offset; where we should start the trace
      *
-     * @return this
+     * @return Eden\Core\Exception
      */
     public function getTraceOffset()
     {
@@ -136,7 +163,8 @@ class Exception extends \Exception
     /**
      * Sets exception level
      *
-     * @param *string
+     * @param *string $level the gravity of the exception
+     *
      * @return Eden\Core\Exception
      */
     public function setLevel($level)
@@ -188,7 +216,8 @@ class Exception extends \Exception
     /**
      * Sets message
      *
-     * @param *string
+     * @param *string $message the Exception message
+     *
      * @return Eden\Core\Exception
      */
     public function setMessage($message)
@@ -199,6 +228,8 @@ class Exception extends \Exception
 
     /**
      * Sets what index the trace should start at
+     *
+     * @param int $offset for correcting false positives in the trace
      *
      * @return Eden\Core\Exception
      */
@@ -211,7 +242,8 @@ class Exception extends \Exception
     /**
      * Sets exception type
      *
-     * @param *string
+     * @param *string $type custom error type
+     *
      * @return Eden\Core\Exception
      */
     public function setType($type)
@@ -262,27 +294,25 @@ class Exception extends \Exception
 
     /**
      * Combines parameters with message and throws it
-     *
-     * @return void
      */
     public function trigger()
     {
         $this->trace = debug_backtrace();
 
         $this->reporter = get_class($this);
-        if(isset($this->trace[$this->offset]['class'])) {
+        if (isset($this->trace[$this->offset]['class'])) {
             $this->reporter = $this->trace[$this->offset]['class'];
         }
 
-        if(isset($this->trace[$this->offset]['file'])) {
+        if (isset($this->trace[$this->offset]['file'])) {
             $this->file = $this->trace[$this->offset]['file'];
         }
 
-        if(isset($this->trace[$this->offset]['line'])) {
+        if (isset($this->trace[$this->offset]['line'])) {
             $this->line = $this->trace[$this->offset]['line'];
         }
 
-        if(!empty($this->variables)) {
+        if (!empty($this->variables)) {
             $this->message = vsprintf($this->message, $this->variables);
             $this->variables = array();
         }
