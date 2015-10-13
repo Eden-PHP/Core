@@ -1,6 +1,6 @@
 <?php //-->
 /**
- * This file is part of the Eden package.
+ * This file is part of the Eden PHP Library.
  * (c) 2014-2016 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE.txt
@@ -19,8 +19,15 @@ namespace Eden\Core;
  */
 class Inspect extends Base
 {
-    const INSTANCE     = 1;
-    const INSPECT     = 'INSPECTING %s:';
+    /**
+     * @const int INSTANCE Flag that designates singleton when using ::i()
+     */
+    const INSTANCE = 1;
+
+    /**
+     * @const int INSPECT Output template
+     */
+    const INSPECT = 'INSPECTING %s:';
     
     /**
      * @var object|null $scope the inspected instance
