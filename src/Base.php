@@ -23,12 +23,12 @@ namespace Eden\Core;
 class Base
 {
     /**
-     * @const int ERROR_REFLECTION Error template
+     * @const string ERROR_REFLECTION Error template
      */
     const ERROR_REFLECTION = 'Error creating Reflection Class: %s, Method: %s.';
     
     /**
-     * @const int INSTANCE Error template
+     * @const string ERROR_CALL Error template
      */
     const ERROR_CALL = 'Both Physical and Virtual method %s->%s() does not exist.';
     
@@ -38,7 +38,7 @@ class Base
     const INSTANCE = 0;
     
     /**
-     * @var bool $states memory cache of instances saved
+     * @var array $states memory cache of instances saved
      */
     private static $states = array();
     
