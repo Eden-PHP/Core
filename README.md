@@ -1,6 +1,6 @@
 ![logo](http://eden.openovate.com/assets/images/cloud-social.png) Eden Core
 ====
-[![Build Status](https://api.travis-ci.org/Eden-PHP/Core.png)](https://travis-ci.org/Eden-PHP/Core)
+[![Build Status](https://api.travis-ci.org/Eden-PHP/Core.png)](https://travis-ci.org/Eden-PHP/Core) [![Latest Stable Version](https://poser.pugx.org/eden/core/v/stable)](https://packagist.org/packages/eden/core) [![Total Downloads](https://poser.pugx.org/eden/core/downloads)](https://packagist.org/packages/eden/core) [![Latest Unstable Version](https://poser.pugx.org/eden/core/v/unstable)](https://packagist.org/packages/eden/core) [![License](https://poser.pugx.org/eden/core/license)](https://packagist.org/packages/eden/core)
 ====
 
 - [Install](#install)
