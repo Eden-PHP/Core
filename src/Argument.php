@@ -1,6 +1,6 @@
 <?php //-->
 /**
- * This file is part of the Eden package.
+ * This file is part of the Eden PHP Library.
  * (c) 2014-2016 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE.txt
@@ -24,6 +24,9 @@ namespace Eden\Core;
  */
 class Argument
 {
+    /**
+     * @const int INVALID_ARGUMENT Error template
+     */
     const INVALID_ARGUMENT = 'Argument %d in %s() was expecting %s, however %s was given.';
     
     /**

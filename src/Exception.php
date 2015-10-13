@@ -1,6 +1,6 @@
 <?php //-->
 /**
- * This file is part of the Eden package.
+ * This file is part of the Eden PHP Library.
  * (c) 2014-2016 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE.txt
@@ -24,17 +24,45 @@ namespace Eden\Core;
  */
 class Exception extends \Exception
 {
-    //error _type
-    const ARGUMENT = 'ARGUMENT'; //used when argument is invalidated
-    const LOGIC = 'LOGIC';    //used when logic is invalidated
-    const GENERAL = 'GENERAL';  //used when anything in general is invalidated
-    const CRITICAL = 'CRITICAL'; //used when anything caused application to crash
+    /**
+     * @const string ARGUMENT Used when argument is invalidated
+     */
+    const ARGUMENT = 'ARGUMENT';
 
-    //error _level
+    /**
+     * @const string LOGIC Used when logic is invalidated
+     */
+    const LOGIC = 'LOGIC';
+
+    /**
+     * @const string GENERAL Used when anything in general is invalidated
+     */
+    const GENERAL = 'GENERAL';
+
+    /**
+     * @const string CRITICAL Used when anything caused application to crash
+     */
+    const CRITICAL = 'CRITICAL';
+
+    /**
+     * @const string WARNING Used to inform developer without crashing
+     */
     const WARNING = 'WARNING';
+
+    /**
+     * @const string ERROR Used when code was thrown
+     */
     const ERROR = 'ERROR';
-    const DEBUG = 'DEBUG';       //used for temporary developer output
-    const INFORMATION = 'INFORMATION'; //used for permanent developer notes
+
+    /**
+     * @const string DEBUG Used for temporary developer output
+     */
+    const DEBUG = 'DEBUG';
+
+    /**
+     * @const string INFORMATION Used for permanent developer notes
+     */
+    const INFORMATION = 'INFORMATION';
     
     /**
      * @var string|null $reporter class name that it came from

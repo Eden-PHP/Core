@@ -1,6 +1,6 @@
 <?php //-->
 /**
- * This file is part of the Eden package.
+ * This file is part of the Eden PHP Library.
  * (c) 2014-2016 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE.txt
@@ -22,9 +22,19 @@ namespace Eden\Core;
  */
 class Base
 {
+    /**
+     * @const int ERROR_REFLECTION Error template
+     */
     const ERROR_REFLECTION = 'Error creating Reflection Class: %s, Method: %s.';
+    
+    /**
+     * @const int INSTANCE Error template
+     */
     const ERROR_CALL = 'Both Physical and Virtual method %s->%s() does not exist.';
     
+    /**
+     * @const int INSTANCE Flag that designates multiton when using ::i()
+     */
     const INSTANCE = 0;
     
     /**
