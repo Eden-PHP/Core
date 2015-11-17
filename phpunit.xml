@@ -13,6 +13,7 @@
 >
   <testsuites>
     <testsuite name="Eden Core Test Suite">
+      <file>test/Decorator.php</file>
       <file>test/Exception.php</file>
       <file>test/Argument.php</file>
       <file>test/Route.php</file>

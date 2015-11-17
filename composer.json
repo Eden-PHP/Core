@@ -15,6 +15,7 @@
         "php": ">=5.4.1"
     },
     "autoload": {
-         "psr-4": { "Eden\\Core\\": "src/" }
+         "psr-4": { "Eden\\Core\\": "src/" },
+		 "classmap": [ "src/Decorator.php" ]
     }
 }
