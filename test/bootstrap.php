@@ -6,17 +6,15 @@
  * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
-namespace {
-    require_once __DIR__.'/../src/Argument.php';
-    require_once __DIR__.'/../src/Base.php';
-    require_once __DIR__.'/../src/Exception.php';
-    require_once __DIR__.'/../src/Route.php';
-    require_once __DIR__.'/../src/Control.php';
-    require_once __DIR__.'/../src/Event.php';
-    require_once __DIR__.'/../src/Index.php';
-    require_once __DIR__.'/../src/Inspect.php';
-    
-    class Bar_Foo_Zoo extends Eden\Core\Base
+
+namespace 
+{
+	
+	require_once __DIR__.'/../../../autoload.php';
+	
+	Eden::DECORATOR;
+	
+ 	class Bar_Foo_Zoo extends Eden\Core\Base
     {
         protected $foobar = 4;
         
