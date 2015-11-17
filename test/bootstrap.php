@@ -22,6 +22,7 @@ namespace
 		require_once __DIR__.'/../src/Event.php';
 		require_once __DIR__.'/../src/Index.php';
 		require_once __DIR__.'/../src/Inspect.php';
+		require_once __DIR__.'/../src/Decorator.php';
 	}
 	
  	class Bar_Foo_Zoo extends Eden\Core\Base
