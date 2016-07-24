@@ -85,7 +85,7 @@ class Argument
 
     /**
      * By default we are turning this off
-	 * You can turn it on with this method
+     * You can turn it on with this method
      *
      * @return Eden\Core\Argument
      */
