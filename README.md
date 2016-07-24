@@ -27,6 +27,30 @@
 
 ====
 
+## Enable Eden
+
+The following documentation uses `eden()` in its example reference. Enabling this function requires an extra step as descirbed in this section which is not required if you access this package using the following.
+
+```
+Eden\Core\Control::i();
+```
+
+When using composer, there is not an easy way to access functions from packages. As a workaround, adding this constant in your code will allow `eden()` to be available after. 
+
+```
+Eden::DECORATOR;
+```
+
+For example:
+
+```
+Eden::DECORATOR;
+
+eden()->inspect('Hello World');
+```
+
+====
+
 <a name="intro"></a>
 ## Introduction
 
@@ -142,7 +166,7 @@ eden()->addMethod('output', function($string) {
     return $this;
 });
 
-eden()->output('Hello World');
+eden()->inspect('Hello World');
 ```
 
 #### Parameters
