@@ -28,12 +28,12 @@ class Argument
      * @const int INVALID_ARGUMENT Error template
      */
     const INVALID_ARGUMENT = 'Argument %d in %s() was expecting %s, however %s was given.';
-    
+
     /**
      * @var bool $stop whether to turn on/off testing
      */
     protected static $stop = true;
-    
+
     /**
      * One of the hard thing about instantiating classes is
      * that design patterns can impose different ways of
@@ -51,9 +51,9 @@ class Argument
     public static function i()
     {
         $class = __CLASS__;
-        return new $class($message, $code);
+        return new $class();
     }
-    
+
     /**
      * Tests arguments for valid data types
      *
@@ -179,7 +179,7 @@ class Argument
             ->setTraceOffset($offset)
             ->trigger();
     }
-    
+
     /**
      * Validates a credit card argument.
      *
@@ -367,7 +367,7 @@ class Argument
 
         return true;
     }
-    
+
     /**
      * Returns the data type of the argument
      *
